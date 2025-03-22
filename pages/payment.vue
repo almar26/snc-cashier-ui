@@ -1,29 +1,47 @@
 <template>
   <div>
-   
-    <SideBarRight
-      :total="total"
-      :tax="tax"
-      @clearTransaction="clearTransactions"
-    />
-    <h1>Payment</h1>
+    <v-navigation-drawer v-model="drawer" permanent color="white" location="right" width="350">
+      <v-list subheader two-line class="mt-1">
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-subtitle>I'am a Cashiers</v-list-item-subtitle>
+            <v-list-item-title>Jelly Grande</v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-action>
+            <v-badge bordered overlap color="red" dot>
+              <v-icon>mdi-bell</v-icon>
+            </v-badge>
+          </v-list-item-action>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    <v-app-bar elevation="0">
+      <v-app-bar-title>Student Accounts</v-app-bar-title>
+      <v-spacer></v-spacer>
+      <v-text-field hideDetails density="compact" variant="solo-filled" prepend-inner-icon="mdi-magnify"
+        flat></v-text-field>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    </v-app-bar>
     <v-row>
       <v-col cols="6">
         <v-card elevation="0" class="border-box">
           <v-card-text>
-          asdasd
-        </v-card-text>
+            asdasd
+          </v-card-text>
         </v-card>
       </v-col>
       <v-col cols="6">
-        <v-card>
-          asdasd
+        <v-card elevation="0" class="border-box">
+          <v-card-text>
+            asdasd
+          </v-card-text>
+
         </v-card>
       </v-col>
     </v-row>
 
 
-     <!-- <v-navigation-drawer location="right" width="400" id="main-sidebar">
+    <!-- <v-navigation-drawer location="right" width="400" id="main-sidebar">
       <v-list>
         <v-list-item
           v-for="n in 5"
@@ -49,12 +67,11 @@
 // definePageMeta({
 //   layout: "payment",
 // });
+const drawer = ref(true)
 </script>
 
 <style lang="scss" scoped>
-
 .border-box {
   border: 1px solid rgba(0, 0, 0, 0.116);
 }
-
 </style>
