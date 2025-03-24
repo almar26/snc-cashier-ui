@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h1>Music</h1>
-    <v-btn></v-btn>
+    <h1>Reports Page</h1>
   </div>
 </template>
 

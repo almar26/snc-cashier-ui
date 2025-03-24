@@ -34,7 +34,7 @@
         </v-card>
       </v-col>
       <v-col cols="6">
-        <v-card elevation="0" class="border-box">
+        <v-card elevation="0" class="border-box" style="height: 90vh;">
           <v-card-text>
             asdasd
           </v-card-text>

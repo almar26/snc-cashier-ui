@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Student Page</h1>
+    <h1>Other Fees Page</h1>
   </div>
 </template>
 
