@@ -103,15 +103,15 @@ const items = ref([
   border-top: 3px solid #04c87a !important;
 }
 
-// .border {
-//   margin: 5px 8px 5px 8px;
-//   border-radius: 10px;
-//   border-bottom: 2px solid #4caf50 !important;
-//   text-decoration: none;
-//   //color: #4CAF50 ;
-// }
+.border {
+  margin: 5px 8px 5px 8px;
+  border-radius: 10px;
+  //border-bottom: 2px solid #4caf50 !important;
+  text-decoration: none;
+  color: #4CAF50 ;
+}
 .logout-border {
-  margin: 10px 8px 5px 8px;
+  margin: 10px 5px 5px 5px;
   border-radius: 10px;
   text-decoration: none;
 }

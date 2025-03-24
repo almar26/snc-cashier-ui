@@ -14,12 +14,15 @@
           </v-list-item-action>
         </v-list-item>
       </v-list>
+      <div class="mx-3">
+        <v-text-field variant="solo-filled" density="compact" append-inner-icon="mdi-magnify" hideDetails flat></v-text-field>
+      </div>
     </v-navigation-drawer>
-    <v-app-bar elevation="0">
+    <v-app-bar elevation="0" color="transparent">
       <v-app-bar-title>Student Accounts</v-app-bar-title>
       <v-spacer></v-spacer>
-      <v-text-field hideDetails density="compact" variant="solo-filled" prepend-inner-icon="mdi-magnify"
-        flat></v-text-field>
+      <!-- <v-text-field hideDetails density="compact" variant="solo-filled" prepend-inner-icon="mdi-magnify"
+        flat></v-text-field> -->
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
     </v-app-bar>
     <v-row>
