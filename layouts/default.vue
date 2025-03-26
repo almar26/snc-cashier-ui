@@ -27,7 +27,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item active-class="border" class="logout-border" to="/student-accounts">
+          <v-list-item active-class="border" class="logout-border" to="/student-accounts" :active="$route.path.startsWith('/student-accounts')">
             <v-list-item-content>
               <v-icon>mdi-wallet</v-icon>
               <!-- <Icon name="ic:baseline-account-balance-wallet" size="28"/> -->
@@ -35,7 +35,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item active-class="border" class="logout-border" to="/students">
+          <v-list-item active-class="border" class="logout-border" to="/students" :active="$route.path.startsWith('/students')">
             <v-list-item-content>
               <!-- <v-icon>mdi-account</v-icon> -->
               <Icon name="ic:sharp-supervisor-account" size="28"/>
@@ -44,21 +44,20 @@
           </v-list-item>
 
           <div v-if="userData.user_role == 'head-cashier'">
-            <v-list-item active-class="border" class="logout-border" to="/other-fees">
+            <v-list-item active-class="border" class="logout-border" to="/other-fees" :active="$route.path.startsWith('/other-fees')">
             <v-list-item-content>
               <!-- <v-icon>mdi-notebook-multiple</v-icon> -->
               <Icon name="ic:baseline-dynamic-feed" size="28"/>
               <v-list-item-subtitle>Other Fees</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item active-class="border" class="logout-border" to="/reports">
+          <v-list-item active-class="border" class="logout-border" to="/reports" :active="$route.path.startsWith('/reports')">
             <v-list-item-content>
               <!-- <v-icon>mdi-notebook-multiple</v-icon> -->
               <Icon name="ic:round-library-books" size="28"/>
               <v-list-item-subtitle>Reports</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
-          
         </div>
         </v-list-item-group>
       </v-list>
@@ -68,7 +67,7 @@
           <template v-slot:activator="{ props }">
             <v-btn icon v-bind="props" variant="flat" class="my-5">
               <v-avatar color="primary" size="large">
-                <span class="text-h5">{{ userInitial }}</span>
+                <span>{{ userInitial }}</span>
               </v-avatar>
             </v-btn>
           </template>
@@ -76,12 +75,12 @@
             <v-card-text>
               <div class="mx-auto text-center">
                 <v-avatar color="primary">
-                  <span class="text-h6">{{ userInitial }}</span>
+                  <span >{{ userInitial }}</span>
                 </v-avatar>
                 <h4 class="text-uppercase mt-3">{{ userData.first_name }} {{ userData.last_name }}</h4>
-                <p class="text-overline">
+                <div class="text-overline">
                   {{ userData.position }}
-                </p>
+                </div>
                 <v-divider class="my-3"></v-divider>
                 <v-btn variant="text" rounded>
                   Edit Account

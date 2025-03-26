@@ -1,13 +1,8 @@
 <template>
   <div>
-    <v-app-bar elevation="0" color="transparent">
-      <v-app-bar-title>Student List</v-app-bar-title>
-      <v-spacer></v-spacer>
-      <!-- <v-text-field hideDetails density="compact" variant="solo-filled" prepend-inner-icon="mdi-magnify"
-        flat></v-text-field> -->
-      <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
-    </v-app-bar>
-    <v-btn @click="addStudentDialog = true">Add Student</v-btn>
+    <BaseBreadcrumb :title="page.title" :icon="page.icon" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
+    <!-- <v-btn @click="addStudentDialog = true">Add Student</v-btn> -->
+    <v-btn to="/students/create">Add Student</v-btn>
 
     <v-data-table :items="studentList" :headers="headers"></v-data-table>
 
@@ -57,6 +52,21 @@ const sisStudentList = ref([])
 const studentList = ref([]);
 const search = ref(null);
 const addStudentDialog = ref(false);
+const page = ref({
+  title: "List of Students",
+});
+const breadcrumbs = ref([
+  {
+    title: "Students",
+    disabled: false,
+    to: "/students",
+  },
+
+  {
+    title: "List",
+    disabled: true,
+  },
+]);
 const headers = ref([
   {
     title: "Student #",
