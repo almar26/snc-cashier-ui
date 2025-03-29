@@ -19,8 +19,10 @@
                 </v-col>
                 <v-spacer></v-spacer>
                 <v-col cols="12" md="3">
-                  <v-text-field label="Semester" v-model="semester" class="custom-text-field" variant="solo-filled"
-                    flat></v-text-field>
+                  <!-- <v-text-field label="Semester" v-model="semester" class="custom-text-field" variant="solo-filled"
+                    flat></v-text-field> -->
+                    <v-select label="Semester" :items="['1st Semester', '2nd Semester', 'Summer']" v-model="semester"
+                    variant="solo-filled" flat></v-select>
                 </v-col>
                 <v-col cols="12" md="3">
                   <v-text-field label="School Year" v-model="school_year" variant="solo-filled" flat></v-text-field>
@@ -51,16 +53,27 @@
               </v-row>
 
               <v-row dense>
-                <v-col cols="12" md="5">
+
+                <v-col cols="12" md="4">
                   <!-- <v-text-field label="Gender" v-model="gender" variant="solo-filled" flat></v-text-field> -->
-                  <v-combobox label="Gender"
-                    :items="['Male', 'Female']" v-model="gender" variant="solo-filled" flat></v-combobox>
+                  <!-- <v-combobox label="Gender" :items="['Male', 'Female']" v-model="gender" variant="solo-filled"
+                    flat></v-combobox> -->
+
+                    <v-select label="Gender" :items="['College', 'SHS']" v-model="gender"
+                    variant="solo-filled" flat></v-select>
                 </v-col>
-                <v-spacer></v-spacer>
-                <v-col cols="12" md="5">
+                <v-col cols="12" md="4">
                   <v-text-field label="Contact Number" v-model="contact_number" variant="solo-filled"
                     flat></v-text-field>
                 </v-col>
+                <v-col cols="12" md="4">
+                  <!-- <v-text-field label="Gender" v-model="gender" variant="solo-filled" flat></v-text-field> -->
+                  <!-- <v-combobox label="Student Type" :items="['College', 'SHS']" v-model="student_type"
+                    variant="solo-filled" flat></v-combobox> -->
+                  <v-select label="Student Type" :items="['College', 'SHS']" v-model="student_type"
+                    variant="solo-filled" flat></v-select>
+                </v-col>
+
               </v-row>
             </v-form>
           </v-card-text>
@@ -135,7 +148,7 @@ const studentList = ref([]);
 const search = ref(null);
 const addStudentDialog = ref(false);
 const student_id = ref("");
-const semester = ref("");
+const semester = ref(null);
 const school_year = ref("")
 const student_no = ref("")
 const course = ref("");
@@ -145,8 +158,9 @@ const section = ref("")
 const last_name = ref("")
 const first_name = ref("")
 const middle_name = ref("")
-const gender = ref("")
+const gender = ref(null)
 const contact_number = ref("")
+const student_type = ref(null)
 const tuition_fee = ref("")
 const discount = ref("")
 const payment = ref("")

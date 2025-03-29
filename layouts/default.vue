@@ -42,6 +42,13 @@
               <v-list-item-subtitle>Students</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item active-class="border" class="logout-border" to="/shs" :active="$route.path.startsWith('/shs')">
+            <v-list-item-content>
+              <!-- <v-icon>mdi-account</v-icon> -->
+              <Icon name="ic:sharp-supervisor-account" size="28"/>
+              <v-list-item-subtitle>SHS</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
 
           <div v-if="userData.user_role == 'head-cashier'">
             <v-list-item active-class="border" class="logout-border" to="/other-fees" :active="$route.path.startsWith('/other-fees')">
