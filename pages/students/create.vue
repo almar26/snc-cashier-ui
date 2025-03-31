@@ -7,71 +7,73 @@
           <v-toolbar color="transparent">
             <v-toolbar-title><v-icon start>mdi-account</v-icon> Student Information</v-toolbar-title>
             <v-spacer></v-spacer>
+            <!-- <v-btn color="red" variant="tonal" prepend-icon="mdi-close" class="text-capitalize mr-4"
+              @click="clearForm()">Clear</v-btn> -->
             <v-btn color="blue" variant="tonal" prepend-icon="mdi-import" class="text-capitalize mr-4"
-              @click="addStudentDialog = true">Import Student</v-btn>
+              @click="showImportDialogBox()">Import Student</v-btn>
           </v-toolbar>
           <v-divider></v-divider>
           <v-card-text>
-            <v-form>
+            <v-form ref="studentInfoForm">
               <v-row dense>
                 <v-col cols="12" md="3">
-                  <v-text-field label="Student No" v-model="student_no" variant="solo-filled" flat></v-text-field>
+                  <v-text-field label="Student No" :rules="[rules.required]" v-model="student_no" variant="solo-filled"
+                    flat></v-text-field>
                 </v-col>
                 <v-spacer></v-spacer>
                 <v-col cols="12" md="3">
-                  <!-- <v-text-field label="Semester" v-model="semester" class="custom-text-field" variant="solo-filled"
-                    flat></v-text-field> -->
-                    <v-select label="Semester" :items="['1st Semester', '2nd Semester', 'Summer']" v-model="semester"
-                    variant="solo-filled" flat></v-select>
+                  <v-select label="Semester" :rules="[rules.required]"
+                    :items="['1st Semester', '2nd Semester', 'Summer']" v-model="semester" variant="solo-filled"
+                    flat></v-select>
                 </v-col>
                 <v-col cols="12" md="3">
-                  <v-text-field label="School Year" v-model="school_year" variant="solo-filled" flat></v-text-field>
+                  <v-text-field label="School Year" :rules="[rules.required]" v-model="school_year"
+                    variant="solo-filled" flat></v-text-field>
                 </v-col>
               </v-row>
               <v-row dense>
                 <v-col cols="12" md="4">
-                  <v-text-field label="Last name" v-model="last_name" variant="solo-filled" flat></v-text-field>
+                  <v-text-field label="Last name" :rules="[rules.required]" v-model="last_name" variant="solo-filled"
+                    flat></v-text-field>
                 </v-col>
                 <v-col cols="12" md="4">
-                  <v-text-field label="First name" v-model="first_name" variant="solo-filled" flat></v-text-field>
+                  <v-text-field label="First name" :rules="[rules.required]" v-model="first_name" variant="solo-filled"
+                    flat></v-text-field>
                 </v-col>
                 <v-col cols="12" md="4">
-                  <v-text-field label="Middle name" v-model="middle_name" variant="solo-filled" flat></v-text-field>
+                  <v-text-field label="Middle name" :rules="[rules.required]" v-model="middle_name"
+                    variant="solo-filled" flat></v-text-field>
                 </v-col>
               </v-row>
               <v-row dense>
-
                 <v-col cols="12" md="6">
-                  <v-text-field label="Course" v-model="course" variant="solo-filled" flat></v-text-field>
+                  <v-text-field label="Course" :rules="[rules.required]" v-model="course" variant="solo-filled"
+                    flat></v-text-field>
                 </v-col>
                 <v-col cols="12" md="4">
                   <v-text-field label="Major" v-model="major" variant="solo-filled" flat></v-text-field>
                 </v-col>
                 <v-col cols="12" md="2">
-                  <v-text-field label="Section" v-model="section" variant="solo-filled" flat></v-text-field>
-                </v-col>
-              </v-row>
-
-              <v-row dense>
-
-                <v-col cols="12" md="4">
-                  <!-- <v-text-field label="Gender" v-model="gender" variant="solo-filled" flat></v-text-field> -->
-                  <!-- <v-combobox label="Gender" :items="['Male', 'Female']" v-model="gender" variant="solo-filled"
-                    flat></v-combobox> -->
-
-                    <v-select label="Gender" :items="['College', 'SHS']" v-model="gender"
-                    variant="solo-filled" flat></v-select>
-                </v-col>
-                <v-col cols="12" md="4">
-                  <v-text-field label="Contact Number" v-model="contact_number" variant="solo-filled"
+                  <v-text-field label="Section" :rules="[rules.required]" v-model="section" variant="solo-filled"
                     flat></v-text-field>
                 </v-col>
+              </v-row>
+              <v-row dense>
                 <v-col cols="12" md="4">
-                  <!-- <v-text-field label="Gender" v-model="gender" variant="solo-filled" flat></v-text-field> -->
+                  <!-- <v-combobox label="Gender" :items="['Male', 'Female']" v-model="gender" variant="solo-filled"
+                    flat></v-combobox> -->
+                  <v-select label="Gender" :rules="[rules.required]" :items="['MALE', 'FEMALE']" v-model="gender"
+                    variant="solo-filled" flat></v-select>
+                </v-col>
+                <v-col cols="12" md="4">
+                  <v-text-field label="Contact Number" :rules="[rules.required]" v-model="contact_number"
+                    variant="solo-filled" flat></v-text-field>
+                </v-col>
+                <v-col cols="12" md="4">
                   <!-- <v-combobox label="Student Type" :items="['College', 'SHS']" v-model="student_type"
                     variant="solo-filled" flat></v-combobox> -->
-                  <v-select label="Student Type" :items="['College', 'SHS']" v-model="student_type"
-                    variant="solo-filled" flat></v-select>
+                  <v-select label="Student Type" :rules="[rules.required]" :items="['College', 'SHS']"
+                    v-model="student_type" variant="solo-filled" flat></v-select>
                 </v-col>
 
               </v-row>
@@ -80,27 +82,42 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="4">
-        <v-card elevation="0">
-          <v-toolbar color="transparent">
-            <v-toolbar-title>
-              Tuition Fee Details
-            </v-toolbar-title>
-          </v-toolbar>
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-form>
-              <v-text-field variant="solo-filled" v-model="tuition_fee" flat label="Tuition Fee"></v-text-field>
-              <v-text-field label="Discount" v-model="discount" variant="solo-filled" flat></v-text-field>
-              <v-text-field label="Payment" v-model="payment" variant="solo-filled" flat></v-text-field>
-            </v-form>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions class="px-5 my-2">
-            <v-btn color="primary" variant="flat" block>Save</v-btn>
-          </v-card-actions>
-        </v-card>
+        <v-row>
+          <v-col cols="12">
+            <v-card elevation="0">
+              <v-toolbar color="transparent">
+                <v-toolbar-title>
+                  Tuition Fee Details
+                </v-toolbar-title>
+              </v-toolbar>
+              <v-divider></v-divider>
+              <v-card-text>
+                <v-form ref="studentTuitionForm">
+                  <v-text-field prefix="&#x20B1;" variant="solo-filled" type="number" v-model="tuition_fee"
+                    :rules="[rules.required]" flat label="Tuition Fee"></v-text-field>
+                  <v-text-field prefix="&#x20B1;" label="Discount" type="number" :rules="[rules.required]"
+                    v-model="discount" variant="solo-filled" flat></v-text-field>
+                  <v-text-field prefix="&#x20B1;" label="Downpayment" type="number" :rules="[rules.required]"
+                    v-model="downpayment" variant="solo-filled" flat></v-text-field>
+                </v-form>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12">
+            <v-card elevation="0">
+              <v-card-text>
+                <v-btn color="primary" @click="submitForms()" prepend-icon="mdi-content-save" variant="flat"
+                  block>Save</v-btn>
+                <v-btn color="red" @click="clearForm()" prepend-icon="mdi-close" variant="outlined" class="mt-2"
+                  block>Clear</v-btn>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
+
+    <!-- DIALOG BOX -->
     <v-dialog max-width="900" v-model="addStudentDialog" scrollable persistent>
       <v-card elevation="0">
         <v-toolbar color="primary" density="compact">
@@ -121,8 +138,8 @@
 
         <v-divider></v-divider>
         <v-data-table density="compact" :search="search" :items="sisStudentList" :headers="studentHeaders"
-          :loading="loading2">
-          <template v-slot:loading2>
+          :loading="loading">
+          <template v-slot:loading>
             <v-skeleton-loader type="table-row@10"></v-skeleton-loader>
           </template>
           <template v-slot:[`item.actions`]="{ item }">
@@ -145,6 +162,7 @@
 <script setup>
 const sisStudentList = ref([])
 const studentList = ref([]);
+const loading = ref(false)
 const search = ref(null);
 const addStudentDialog = ref(false);
 const student_id = ref("");
@@ -163,7 +181,12 @@ const contact_number = ref("")
 const student_type = ref(null)
 const tuition_fee = ref("")
 const discount = ref("")
-const payment = ref("")
+const downpayment = ref("")
+const studentInfoForm = ref(null);
+const studentTuitionForm = ref(null);
+const rules = {
+  required: v => !!v || 'Field is required',
+}
 const page = ref({
   title: "Create Student",
 });
@@ -194,16 +217,81 @@ const studentHeaders = ref([
   { title: "", key: "actions", align: "end", sortable: false },
 ]);
 
-async function initialize() {
+
+async function loadStudentList() {
   try {
+    loading.value = true;
     let result = await $fetch(`/api/student/student-list`);
     if (result) {
       sisStudentList.value = result;
-      console.log(result);
+      //console.log(result);
+      loading.value = false;
     }
   } catch (err) {
     console.error("Failed to fetch data: ", err);
     throw err;
+  }
+}
+
+
+async function showImportDialogBox() {
+  addStudentDialog.value = true
+  //loading.value = true
+  //loadStudentList()
+}
+
+async function clearForm() {
+  console.log("Clear Data")
+  studentInfoForm.value?.reset();
+  studentTuitionForm.value?.reset();
+}
+
+const submitForms = async () => {
+  const isValid1 = await studentInfoForm.value.validate();
+  const isValid2 = await studentTuitionForm.value.validate();
+
+  if (isValid1.valid && isValid2.valid) {
+
+    const payload = {
+      student_id: student_id.value,
+      student_no: student_no.value,
+      semester: semester.value,
+      school_year: school_year.value,
+      last_name: last_name.value,
+      first_name: first_name.value,
+      middle_name: middle_name.value,
+      course: course.value,
+      course_code: course_code.value,
+      major: major.value,
+      section: section.value,
+      gender: gender.value,
+      contact_number: contact_number.value,
+      student_type: student_type.value,
+      tuition_fee: tuition_fee.value,
+      discount: discount.value,
+      downpayment: downpayment.value
+    }
+
+    console.log("Submitted data: ", payload);
+    await $fetch('/api/student/create', {
+      method: "POST",
+      body: payload
+    })
+      .then(response => {
+        if (response.status == "fail") {
+          alert(response.message)
+        } else {
+        console.log("Response: ", response);
+        studentInfoForm.value?.reset();
+        studentTuitionForm.value?.reset();
+        alert('Both forms submitted successfully!');
+        }
+      })
+
+
+  }
+  else {
+    alert('Please correct the errors before submitting.');
   }
 }
 
@@ -245,11 +333,12 @@ async function importStudent(item) {
   };
 
   console.log(payload)
+  addStudentDialog.value = false;
 
 }
 
 onMounted(async () => {
-  await initialize();
+  await loadStudentList();
 })
 </script>
 

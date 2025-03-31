@@ -1,15 +1,14 @@
 import axios from 'axios'
 //@ts-ignore
-const SIS_BASE_URL = process.env.SIS_BASE_URL
-//@ts-ignore
-const SIS_API_TOKEN = process.env.SIS_API_TOKEN
-
+const BASE_URL = process.env.BASE_URL
 export default defineEventHandler(async (event) => {
+  const cookies = parseCookies(event);
+  const token = cookies?.token
   try {
-    const result = await axios.get(`${SIS_BASE_URL}/api/student/list`,
+    const result = await axios.get(`${BASE_URL}/api/student/list`,
       {
         headers: {
-          Authorization: `Bearer ${SIS_API_TOKEN}`
+          Authorization: `Bearer ${token}`
         }
       }
     )

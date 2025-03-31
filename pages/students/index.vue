@@ -2,9 +2,28 @@
   <div>
     <BaseBreadcrumb :title="page.title" :icon="page.icon" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
     <!-- <v-btn @click="addStudentDialog = true">Add Student</v-btn> -->
-    <v-btn to="/students/create">Add Student</v-btn>
 
-    <v-data-table :items="studentList" :headers="headers"></v-data-table>
+
+    <v-card elevation="0">
+      <v-card-title class="d-flex align-center">
+        <v-btn class="my-2 text-capitalize" prepend-icon="mdi-plus" color="primary" to="/students/create">Add
+          Student</v-btn>
+        <v-spacer></v-spacer>
+        <v-spacer></v-spacer>
+        <v-text-field v-model="search" density="compact" label="Search" prepend-inner-icon="mdi-magnify"
+          variant="solo-filled" flat hide-details single-line></v-text-field>
+      </v-card-title>
+      <v-divider></v-divider>
+      <v-data-table density="compact" :items="studentList" :search="search" :headers="headers" :loading="loading">
+        <template v-slot:loading>
+          <v-skeleton-loader type="table-row@10"></v-skeleton-loader>
+        </template>
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-btn icon="mdi-pencil" variant="text" size="medium" color="primary"></v-btn>
+        </template>
+      </v-data-table>
+    </v-card>
+
 
     <v-dialog max-width="900" v-model="addStudentDialog" scrollable persistent>
       <v-card elevation="0">
@@ -25,7 +44,7 @@
 
         <v-divider></v-divider>
         <v-card-text>
-          <v-data-table density="compact" :search="search" :items="sisStudentList" :headers="studentHeaders"
+          <v-data-table density="compact" :search="search" :items="studentList" :headers="studentHeaders"
             :loading="loading2">
             <template v-slot:loading2>
               <v-skeleton-loader type="table-row@10"></v-skeleton-loader>
@@ -52,6 +71,7 @@ const sisStudentList = ref([])
 const studentList = ref([]);
 const search = ref(null);
 const addStudentDialog = ref(false);
+const loading = ref(true)
 const page = ref({
   title: "List of Students",
 });
@@ -78,8 +98,9 @@ const headers = ref([
   { title: "Middlename", key: "middle_name", sortable: false },
   { title: "Course", key: "course", sortable: false },
   { title: "Major", key: "major", sortable: false },
+  { title: "Section", key: "section", sortable: false },
   { title: "Gender", key: "gender", sortable: false },
-  { title: "School Year", key: "sy", sortable: false },
+  { title: "School Year", key: "school_year", sortable: false },
   { title: "Semester", key: "semester", sortable: false },
   { title: "", key: "actions", align: "end", sortable: false },
 ]);
@@ -98,27 +119,27 @@ const studentHeaders = ref([
   // { title: "Major", key: "major", sortable: false },
   { title: "", key: "actions", align: "end", sortable: false },
 ]);
-  async function initialize() {
-    try {
-      let result = await $fetch(`/api/student/student-list`);
-      if (result) {
-        sisStudentList.value = result;
-        console.log(result);
-      }
-    } catch (err) {
-      console.error("Failed to fetch data: ", err);
-      throw err;
+async function initialize() {
+  try {
+    let result = await $fetch(`/api/student/list`);
+    if (result) {
+      studentList.value = result;
+      loading.value = false
+      console.log(result);
     }
+  } catch (err) {
+    console.error("Failed to fetch data: ", err);
+    loading.value = false;
+    throw err;
   }
+}
 
-  onMounted(async () => {
-    await initialize();
-  })
+onMounted(async () => {
+  await initialize();
+})
 </script>
 
 <style scoped>
-
-
 :deep() .v-table .v-table__wrapper>table>thead>tr>th {
   border-right: thin solid rgba(var(--v-border-color), var(--v-border-opacity));
   border-bottom: thick solid rgba(var(--v-border-color), var(--v-border-opacity));
@@ -139,5 +160,4 @@ const studentHeaders = ref([
 :deep() .v-table .v-table__wrapper>table>tbody>tr:hover {
   background-color: #f2f2f2;
 }
-
 </style>
