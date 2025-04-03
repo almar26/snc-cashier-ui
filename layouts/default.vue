@@ -50,7 +50,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <div v-if="userData.user_role == 'head-cashier'">
+          <div v-if="userData.user_role == 'head-cashier' || userData.user_role == 'administrator'">
             <v-list-item active-class="border" class="logout-border" to="/other-fees" :active="$route.path.startsWith('/other-fees')">
             <v-list-item-content>
               <!-- <v-icon>mdi-notebook-multiple</v-icon> -->

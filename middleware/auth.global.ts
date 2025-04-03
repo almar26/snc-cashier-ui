@@ -20,7 +20,12 @@ export default defineNuxtRouteMiddleware((to, from) => {
     userInfo.value = user_info;
   }
 
-  if (token.value && user_info.user.user_role === "head-cashier") {
+  // Head Cashier account type
+  if (token.value && user_info.user.user_role === "administrator") {
+    if (to.meta.layout === "auth") {
+      return navigateTo("/");
+    }
+  } else if (token.value && user_info.user.user_role === "head-cashier") {
     if (to.meta.layout === "auth") {
       return navigateTo("/");
     }
@@ -29,11 +34,17 @@ export default defineNuxtRouteMiddleware((to, from) => {
       return navigateTo("/");
     }
 
-    if (user_info.user.user_role === "cashier" && to.path.startsWith("/courses")) {
-        return navigateTo("/");
+    if (
+      user_info.user.user_role === "cashier" &&
+      to.path.startsWith("/courses")
+    ) {
+      return navigateTo("/");
     }
-    if (user_info.user.user_role === "cashier" && to.path.startsWith("/reports")) {
-        return navigateTo("/");
+    if (
+      user_info.user.user_role === "cashier" &&
+      to.path.startsWith("/reports")
+    ) {
+      return navigateTo("/");
     }
   }
 

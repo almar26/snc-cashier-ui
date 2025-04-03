@@ -28,7 +28,7 @@ export const useMyAuthStore = defineStore("myAuthStore", {
       //this.loading = pending
       if (data.value) {
         let userRole = data?.value.user.user_role;
-        if (userRole !== 'head-cashier' && userRole !== 'cashier') {
+        if (userRole !== 'administrator' && userRole !== 'head-cashier' && userRole !== 'cashier') {
        
           this.errorLogin = true;
           return error;
