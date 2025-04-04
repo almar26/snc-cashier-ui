@@ -72,8 +72,8 @@
                 <v-col cols="12" md="4">
                   <!-- <v-combobox label="Student Type" :items="['College', 'SHS']" v-model="student_type"
                     variant="solo-filled" flat></v-combobox> -->
-                  <v-select label="Student Type" :rules="[rules.required]" :items="['College', 'SHS']"
-                    v-model="student_type" variant="solo-filled" flat></v-select>
+                  <v-select label="Course Type" :rules="[rules.required]" :items="['Regular', 'Diploma']"
+                    v-model="course_type" variant="solo-filled" flat></v-select>
                 </v-col>
 
               </v-row>
@@ -178,6 +178,7 @@ const first_name = ref("")
 const middle_name = ref("")
 const gender = ref(null)
 const contact_number = ref("")
+const course_type = ref(null)
 const student_type = ref(null)
 const tuition_fee = ref("")
 const discount = ref("")
@@ -252,6 +253,13 @@ const submitForms = async () => {
 
   if (isValid1.valid && isValid2.valid) {
 
+    const total_payment = parseFloat(downpayment.value) + parseFloat(discount.value);
+    const balance = parseFloat(tuition_fee.value) - total_payment
+    const monthly_payment = balance / 6;
+    console.log("Total payment: ", total_payment)
+    console.log("Balance: ", balance)
+    console.log("Monthly Payment: ", monthly_payment)
+
     const payload = {
       student_id: student_id.value,
       student_no: student_no.value,
@@ -266,10 +274,10 @@ const submitForms = async () => {
       section: section.value,
       gender: gender.value,
       contact_number: contact_number.value,
-      student_type: student_type.value,
-      tuition_fee: tuition_fee.value,
-      discount: discount.value,
-      downpayment: downpayment.value
+      course_type: course_type.value,
+      tuition_fee: parseFloat(tuition_fee.value),
+      discount: parseFloat(discount.value),
+      downpayment: parseFloat(downpayment.value)
     }
 
     console.log("Submitted data: ", payload);
@@ -281,10 +289,10 @@ const submitForms = async () => {
         if (response.status == "fail") {
           alert(response.message)
         } else {
-        console.log("Response: ", response);
-        studentInfoForm.value?.reset();
-        studentTuitionForm.value?.reset();
-        alert('Both forms submitted successfully!');
+          console.log("Response: ", response);
+          studentInfoForm.value?.reset();
+          studentTuitionForm.value?.reset();
+          alert('Both forms submitted successfully!');
         }
       })
 

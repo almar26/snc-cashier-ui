@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
       section: body.section,
       gender: body.gender,
       contact_number: body.contact_number,
-      student_type: body.student_type,
+      course_type: body.course_type,
       tuition_fee: body.tuition_fee,
       discount: body.discount,
       downpayment: body.downpayment
