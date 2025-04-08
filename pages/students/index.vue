@@ -19,7 +19,7 @@
           <v-skeleton-loader type="table-row@10"></v-skeleton-loader>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn icon="mdi-pencil" variant="text" size="medium" color="primary"></v-btn>
+          <v-btn icon="mdi-open-in-new" :to="`/students/${item.documentId}`" variant="text" size="medium" color="primary"></v-btn>
         </template>
       </v-data-table>
     </v-card>
