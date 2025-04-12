@@ -1,27 +1,6 @@
 <template>
   <div>
-    <div class="d-flex align-center justify-center px-10" style="height: 90vh">
-      <v-empty-state image="https://cdn.vuetifyjs.com/docs/images/components/v-empty-state/teamwork.png">
-        <template v-slot:title>
-          <div class="text-subtitle-2 mt-8">
-            Manage your inventory transfers
-          </div>
-        </template>
-
-        <template v-slot:text>
-          <div class="text-caption">
-            Track and receive your incoming inventory from suppliers
-          </div>
-        </template>
-
-        <template v-slot:actions>
-          <v-btn class="text-none" color="white" elevation="1" rounded="lg" size="small" text="Learn more"
-            width="96"></v-btn>
-
-          <v-btn class="text-none" elevation="1" rounded="lg" size="small" text="Add transfer" width="96"></v-btn>
-        </template>
-      </v-empty-state>
-    </div>
+    <h1>Student Records</h1>
 
     <v-dialog v-model="dialog" width="700">
       <v-card :loading="searchLoading">
@@ -35,18 +14,16 @@
           <v-form ref="searchForm" v-model="search" @submit.prevent="searchStudent">
             <v-text-field autofocus="true" variant="solo-filled" clearable v-model="searchRecord" placeholder="Search.."
               hint="Search by Student No, Lastname or Firstname" append-inner-icon="mdi-magnify"
-              @click:append-inner="searchStudent" rounded single-line flat>
-            </v-text-field>
+              @click:append-inner="searchStudent" rounded single-line flat></v-text-field>
           </v-form>
         </div>
-
         <v-card-text v-if="searchResult">
           <v-row>
             <v-divider></v-divider>
             <v-data-table density="compact" :search="search" :items="searchResultData" :headers="studentHeaders"
               :loading="loading">
-              <template v-slot:loading1>
-                <v-skeleton-loader type="table-row@10"></v-skeleton-loader>
+              <template v-slot:loading>
+                <v-skeleton-loader type="table-row@5"></v-skeleton-loader>
               </template>
               <template v-slot:[`item.actions`]="{ item }">
                 <v-tooltip text="Add Student" location="top">
@@ -66,7 +43,7 @@
 
 
     <v-bottom-navigation v-model="value" grow app height="70" class="floating-nav" style="">
-      <v-btn value="home" disabled icon>
+      <v-btn value="home" icon>
         <v-icon>mdi-home</v-icon>
         Home
       </v-btn>
@@ -74,16 +51,15 @@
         <v-icon>mdi-magnify</v-icon>
         Search [F4]
       </v-btn>
-      <v-btn value="add" disabled icon>
+      <v-btn value="add" icon>
         <v-icon>mdi-plus</v-icon>
         New
       </v-btn>
-      <v-btn value="profile" disabled icon>
+      <v-btn value="profile" icon>
         <v-icon>mdi-account</v-icon>
         Account
       </v-btn>
     </v-bottom-navigation>
-
   </div>
 </template>
 
@@ -113,7 +89,7 @@ const studentHeaders = ref([
 
 const searchResultData = ref([
   {
-    id: 1,
+    id: 3,
     student_no: "06-1132",
     last_name: "Gomez",
     first_name: "Almar",
@@ -126,12 +102,12 @@ async function searchStudent() {
   console.log("Searching...")
   searchLoading.value = true;
 
-  setTimeout(() => {
-    searchResult.value = true;
-    searchLoading.value = false;
-  }, 3000)
-
+setTimeout(() => {
+  searchResult.value = true;
+  searchLoading.value = false;
+}, 3000)
 }
+
 
 onMounted(() => {
   hotkeys('ctrl+s, ctrl+a, f4', (event, handler) => {
@@ -153,7 +129,6 @@ onMounted(() => {
     }
   })
 })
-
 </script>
 
 <style scoped>

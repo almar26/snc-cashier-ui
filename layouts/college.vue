@@ -1,13 +1,19 @@
 <template>
-  <div>
-    <slot />
-  </div>
+  <v-app>
+    <v-main>
+      <slot />
+    </v-main>
+    <FloatingBottomNav />
+  </v-app>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 
 </script>
 
-<style>
-
+<style scoped>
+/* Make sure nothing breaks layout */
+.v-app {
+  position: relative;
+}
 </style>
