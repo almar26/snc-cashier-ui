@@ -28,7 +28,7 @@
               <template v-slot:[`item.actions`]="{ item }">
                 <v-tooltip text="Add Student" location="top">
                   <template v-slot:activator="{ props }">
-                    <v-btn size="small" :to="`/student-accounts/${item.id}`" class="mr-1" variant="flat" v-bind="props"
+                    <v-btn size="small" @click="openStudentAccount(item.id)" class="mr-1" variant="flat" v-bind="props"
                       prepend-icon="mdi-open-in-new" color="green">
                       open
                     </v-btn>
@@ -42,24 +42,33 @@
     </v-dialog>
 
 
-    <v-bottom-navigation v-model="value" grow app height="70" class="floating-nav" style="">
+    <v-bottom-navigation v-model="value" grow app height="70" class="floating-nav">
       <v-btn value="home" icon>
         <v-icon>mdi-home</v-icon>
         Home
       </v-btn>
-      <v-btn value="search" @click="dialog = true" icon>
-        <v-icon>mdi-magnify</v-icon>
-        Search [F4]
-      </v-btn>
-      <v-btn value="add" icon>
+      <v-tooltip text="Search" location="top">
+        <template v-slot:activator="{ props }">
+          <v-btn v-bind="props" value="search" @click="dialog = true" icon>
+            <v-icon>mdi-magnify</v-icon>
+            [F4]
+          </v-btn>
+        </template>
+      </v-tooltip>
+      <v-tooltip text="New" location="top">
+        <template v-slot:activator="{ props }">
+      <v-btn v-bind="props" value="add" icon>
         <v-icon>mdi-plus</v-icon>
         New
       </v-btn>
+      </template>
+      </v-tooltip>
       <v-btn value="profile" icon>
         <v-icon>mdi-account</v-icon>
         Account
       </v-btn>
     </v-bottom-navigation>
+
   </div>
 </template>
 
@@ -95,6 +104,14 @@ const searchResultData = ref([
     first_name: "Almar",
     middle_name: "Santos",
     course: "BSIT"
+  },
+  {
+    id: 4,
+    student_no: "06-1133",
+    last_name: "Gomez",
+    first_name: "Almar",
+    middle_name: "Santos",
+    course: "BSIT"
   }
 ])
 
@@ -102,10 +119,17 @@ async function searchStudent() {
   console.log("Searching...")
   searchLoading.value = true;
 
-setTimeout(() => {
-  searchResult.value = true;
-  searchLoading.value = false;
-}, 3000)
+  setTimeout(() => {
+    searchResult.value = true;
+    searchLoading.value = false;
+  }, 3000)
+}
+
+async function openStudentAccount(item) {
+  console.log(item)
+  dialog.value = false
+  //  navigateTo(`/student-accounts/${item}`)
+  await navigateTo(`/student-accounts/${item}`)
 }
 
 
