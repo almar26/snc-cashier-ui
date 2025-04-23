@@ -23,7 +23,7 @@
       </v-empty-state>
     </div>
 
-    <v-dialog v-model="dialog" width="700">
+    <!-- <v-dialog v-model="dialog" width="700">
       <v-card :loading="searchLoading">
         <template v-slot:loader="{ isActive }">
           <v-progress-linear :active="isActive" color="red" height="4" indeterminate></v-progress-linear>
@@ -62,23 +62,32 @@
           </v-row>
         </v-card-text>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
 
-
-    <v-bottom-navigation v-model="value" grow app height="70" class="floating-nav" style="">
-      <v-btn value="home" disabled icon>
+    <StudentSearchStudent v-model="searchDialog"/>
+    
+    <v-bottom-navigation v-model="value" grow app height="70" class="floating-nav">
+      <v-btn value="home" to="/" icon>
         <v-icon>mdi-home</v-icon>
         Home
       </v-btn>
-      <v-btn value="search" @click="dialog = true" icon>
-        <v-icon>mdi-magnify</v-icon>
-        Search [F4]
-      </v-btn>
-      <v-btn value="add" disabled icon>
+      <v-tooltip text="Search" location="top">
+        <template v-slot:activator="{ props }">
+          <v-btn v-bind="props" value="search" @click="searchDialog = true" icon>
+            <v-icon>mdi-magnify</v-icon>
+            [F4]
+          </v-btn>
+        </template>
+      </v-tooltip>
+      <v-tooltip text="New" location="top">
+        <template v-slot:activator="{ props }">
+      <v-btn v-bind="props" value="add" icon>
         <v-icon>mdi-plus</v-icon>
         New
       </v-btn>
-      <v-btn value="profile" disabled icon>
+      </template>
+      </v-tooltip>
+      <v-btn value="profile" icon>
         <v-icon>mdi-account</v-icon>
         Account
       </v-btn>
@@ -89,10 +98,15 @@
 
 <script setup>
 import hotkeys from 'hotkeys-js';
+definePageMeta({
+  layout: "account",
+});
+const router = useRouter();
 const searchRecord = ref("")
 const searchResult = ref(false)
 const searchLoading = ref(false)
 const search = ref(null)
+const searchDialog = ref(false)
 const dialog = ref(false);
 const value = ref(null)
 const loading = ref(false)
@@ -134,11 +148,11 @@ async function searchStudent() {
 }
 
 onMounted(() => {
-  hotkeys('ctrl+s, ctrl+a, f4', (event, handler) => {
+  hotkeys('f1, ctrl+a, f4', (event, handler) => {
     switch (handler.key) {
-      case 'ctrl+s':
+      case 'f1':
         event.preventDefault()
-        alert('you pressed ctrl+s')
+        router.push("/");
         break;
       case 'ctrl+a':
         event.preventDefault()
@@ -147,7 +161,7 @@ onMounted(() => {
       case 'f4':
         event.preventDefault()
         //alert("you pressed f4")
-        dialog.value = true;
+        searchDialog.value = true;
         break;
       default: alert(event);
     }
