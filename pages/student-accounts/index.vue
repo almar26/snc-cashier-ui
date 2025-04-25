@@ -98,9 +98,9 @@
 
 <script setup>
 import hotkeys from 'hotkeys-js';
-definePageMeta({
-  layout: "account",
-});
+// definePageMeta({
+//   layout: "account",
+// });
 const router = useRouter();
 const searchRecord = ref("")
 const searchResult = ref(false)
@@ -176,7 +176,7 @@ onMounted(() => {
   transform: translateX(-50%) !important;
   bottom: 16px !important;
   width: 400px !important;
-  border-radius: 32px;
+  border-radius: 12px;
   background-color: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }

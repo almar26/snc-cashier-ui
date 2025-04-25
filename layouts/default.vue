@@ -1,11 +1,11 @@
 <template>
   <v-app>
 
-    <v-navigation-drawer v-model="drawer" elevation="0" :rail="rail" rail-width="110" id="main-sidebar">
+    <v-navigation-drawer color="primary" v-model="drawer" elevation="0" :rail="rail" rail-width="110" id="main-sidebar">
       <div class="image-container">
         <v-img src="/SNC-Logo.png" alt="Centered Image" class="rounded-image"></v-img>
       </div>
-
+        <v-divider></v-divider>
       
       <!-- <v-list nav>
         <v-list-item-group>
@@ -72,8 +72,8 @@
         <v-divider></v-divider>.
         <v-menu min-width="200px">
           <template v-slot:activator="{ props }">
-            <v-btn icon v-bind="props" variant="flat" class="my-5">
-              <v-avatar color="primary" size="large">
+            <v-btn icon v-bind="props" variant="flat" class="my-3">
+              <v-avatar size="large">
                 <span>{{ userInitial }}</span>
               </v-avatar>
             </v-btn>
@@ -145,7 +145,7 @@ const value = ref(0)
 const fnameInitial = ref("")
 const lnameInitial = ref("");
 const userInitial = ref(userData.value.first_name.substring(0, 1)+userData.value.last_name.substring(0, 1))
-const hideAppBarPages = ['/student-accounts', '/payment']
+const hideAppBarPages = ['/payment']
 const items = ref([
   { title: "Dashboard", route: "/", icon: "mdi-view-dashboard" },
   { title: "Accounts", route: "/student-acounts", icon: "mdi-network-pos" },
@@ -212,7 +212,7 @@ onMounted(() => {
   border-radius: 10px;
   //border-bottom: 2px solid #4caf50 !important;
   text-decoration: none;
-  color: #4CAF50;
+  //color: #4CAF50;
 }
 
 .logout-border {
