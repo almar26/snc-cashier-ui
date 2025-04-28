@@ -5,7 +5,7 @@
     <v-row>
       <v-col cols="12">
         <v-card elevation="0" class="card-outlined">
-          <v-toolbar color="transparent">
+          <v-toolbar color="transparent" density="compact">
             <v-toolbar-title class="title-color">Account Information</v-toolbar-title>
           </v-toolbar>
           <v-divider></v-divider>
@@ -16,10 +16,126 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" md="8">
-        <v-card elevation="0">
+      <v-col cols="12" md="3">
+        <v-row dense>
+          <v-col cols="12">
+            <v-card elevation="0" class="card-outlined">
+              <v-toolbar color="transparent" density="compact">
+                <v-toolbar-title class="title-color"><v-icon start>mdi-account</v-icon> Account
+                  Information</v-toolbar-title>
+              </v-toolbar>
+              <v-divider></v-divider>
+              <v-card-text class="text-center">
+                <v-avatar size="100" color="#EEEEEE" class="mb-3">
+                  <v-icon icon="mdi-account-circle" color="grey" size="95"></v-icon>
+                </v-avatar>
+                <!-- <p class="student-no mb-2">{{ studentAccounts.student_no }}</p>
+                <p class="student-name">{{ studentAccounts.first_name }} {{ studentAccounts.last_name }}</p> -->
+                <v-row dense justify="center" class="text-left">
+                  <v-col cols="12" md="4">
+                    <v-sheet class="mr- label-color text-uppercase">Student No </v-sheet>
+                    <!-- <v-list-subheader>Tuition Fee 1</v-list-subheader> -->
+                  </v-col>
+                  <v-col cols="12" md="7">
+                   {{ studentAccounts.student_no }}
+                   </v-col>
+                </v-row>
+                <v-row dense justify="center" class="text-left">
+                  <v-col cols="12" md="4">
+                    <v-sheet class="mr-5 label-color text-uppercase">Name </v-sheet>
+                    <!-- <v-list-subheader>Tuition Fee 1</v-list-subheader> -->
+                  </v-col>
+                  <v-col cols="12" md="7">
+                    {{ studentAccounts.last_name }}, {{ studentAccounts.first_name }} {{ studentAccounts.middle_name }}
+                   </v-col>
+                </v-row>
+                <v-row dense justify="center" class="text-left">
+                  <v-col cols="12" md="4">
+                    <v-sheet class="mr-5 label-color text-uppercase">Course </v-sheet>
+                    <!-- <v-list-subheader>Tuition Fee 1</v-list-subheader> -->
+                  </v-col>
+                  <v-col cols="12" md="7">
+                    {{ studentAccounts.course_code }}-{{ studentAccounts.section }}
+                   </v-col>
+                </v-row>
+                <v-row dense justify="center" class="text-left">
+                  <v-col cols="12" md="4">
+                    <v-sheet class="mr-5 label-color text-uppercase">Setion </v-sheet>
+                    <!-- <v-list-subheader>Tuition Fee 1</v-list-subheader> -->
+                  </v-col>
+                  <v-col cols="12" md="7">
+                    {{ studentAccounts.section }}
+                   </v-col>
+                </v-row>
+                <v-row dense justify="center" class="text-left">
+                  <v-col cols="12" md="4">
+                    <v-sheet class="mr-5 label-color text-uppercase">Contact # </v-sheet>
+                    <!-- <v-list-subheader>Tuition Fee 1</v-list-subheader> -->
+                  </v-col>
+                  <v-col cols="12" md="7">
+                    {{ studentAccounts.contact_number }}
+                   </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12">
+            <v-card elevation="0" class="card-outlined">
+              <v-toolbar color="transparent" density="compact">
+                <v-toolbar-title class="title-color">Tuition Fee Details</v-toolbar-title>
+              </v-toolbar>
+              <v-divider></v-divider>
+              <v-card-text>
+                <v-row no-gutters justify="center">
+                  <v-col cols="12" md="4">
+
+                    <v-sheet class="mr-8 label-color">Tuition Fee </v-sheet>
+                  </v-col>
+                  <v-col cols="12" md="7">
+                    <v-text-field density="compact" disabled v-model="facultyno"
+                      variant="outlined"></v-text-field></v-col>
+                </v-row>
+                <v-row no-gutters justify="center">
+                  <v-col cols="12" md="4">
+
+                    <v-sheet class="mr-8 label-color">Discount </v-sheet>
+                  </v-col>
+                  <v-col cols="12" md="7">
+
+                    <v-text-field density="compact" disabled v-model="facultyno" variant="outlined"></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row no-gutters justify="center">
+                  <v-col cols="12" md="4">
+
+                    <v-sheet class="mr-8 label-color">Downpayment </v-sheet>
+                  </v-col>
+                  <v-col cols="12" md="7">
+
+                    <v-text-field density="compact" disabled v-model="facultyno" variant="outlined"></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row no-gutters justify="center">
+                  <v-col cols="12" md="4">
+
+                    <v-sheet class="mr-8 label-color">Balance </v-sheet>
+                  </v-col>
+                  <v-col cols="12" md="7">
+
+                    <v-text-field density="compact" disabled v-model="facultyno" variant="outlined"></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+
+      </v-col>
+      <v-col cols="12" md="9">
+        <v-card elevation="0" class="card-outlined">
           <v-toolbar color="transparent" density="compact">
-            <v-toolbar-title class="title-color">Payment History</v-toolbar-title>
+            <v-toolbar-title class="title-color"><v-icon start>mdi-clipboard-text-clock</v-icon> Payment
+              History</v-toolbar-title>
           </v-toolbar>
           <v-divider></v-divider>
           <v-card-text>
@@ -27,7 +143,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" md="4">
+      <!-- <v-col cols="12" md="12">
         <v-card elevation="0">
           <v-toolbar color="transparent" density="compact">
             <v-toolbar-title class="title-color">Tuition Fee Details</v-toolbar-title>
@@ -35,50 +151,46 @@
           <v-divider></v-divider>
           <v-card-text>
             <v-row no-gutters justify="center">
-                <v-col cols="12" md="4">
-                  
-                  <v-sheet class="mr-8 label-color">Tuition Fee </v-sheet>
-                </v-col>
-                <v-col cols="12" md="7">
-                  <v-text-field density="compact" disabled v-model="facultyno"
-                    variant="outlined"></v-text-field></v-col>
-              </v-row>
-              <v-row no-gutters justify="center">
-                <v-col cols="12" md="4">
-                 
-                  <v-sheet class="mr-8 label-color">Discount </v-sheet>
-                </v-col>
-                <v-col cols="12" md="7">
-                 
-                  <v-text-field density="compact" disabled v-model="facultyno"
-                  variant="outlined"></v-text-field>
-                  </v-col>
-              </v-row>
-              <v-row no-gutters justify="center">
-                <v-col cols="12" md="4">
-                 
-                  <v-sheet class="mr-8 label-color">Downpayment </v-sheet>
-                </v-col>
-                <v-col cols="12" md="7">
-                 
-                  <v-text-field density="compact" disabled v-model="facultyno"
-                  variant="outlined"></v-text-field>
-                  </v-col>
-              </v-row>
-              <v-row no-gutters justify="center">
-                <v-col cols="12" md="4">
-                 
-                  <v-sheet class="mr-8 label-color">Balance </v-sheet>
-                </v-col>
-                <v-col cols="12" md="7">
-                 
-                  <v-text-field density="compact" disabled v-model="facultyno"
-                  variant="outlined"></v-text-field>
-                  </v-col>
-              </v-row>
+              <v-col cols="12" md="4">
+
+                <v-sheet class="mr-8 label-color">Tuition Fee </v-sheet>
+              </v-col>
+              <v-col cols="12" md="7">
+                <v-text-field density="compact" disabled v-model="facultyno" variant="outlined"></v-text-field></v-col>
+            </v-row>
+            <v-row no-gutters justify="center">
+              <v-col cols="12" md="4">
+
+                <v-sheet class="mr-8 label-color">Discount </v-sheet>
+              </v-col>
+              <v-col cols="12" md="7">
+
+                <v-text-field density="compact" disabled v-model="facultyno" variant="outlined"></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row no-gutters justify="center">
+              <v-col cols="12" md="4">
+
+                <v-sheet class="mr-8 label-color">Downpayment </v-sheet>
+              </v-col>
+              <v-col cols="12" md="7">
+
+                <v-text-field density="compact" disabled v-model="facultyno" variant="outlined"></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row no-gutters justify="center">
+              <v-col cols="12" md="4">
+
+                <v-sheet class="mr-8 label-color">Balance </v-sheet>
+              </v-col>
+              <v-col cols="12" md="7">
+
+                <v-text-field density="compact" disabled v-model="facultyno" variant="outlined"></v-text-field>
+              </v-col>
+            </v-row>
 
 
-            <!-- <v-row no-gutters justify="center">
+            <v-row no-gutters justify="center">
               <v-col cols="12" md="4">
                 <v-sheet class="mr-8 label-color">Tuition Fee </v-sheet>
               </v-col>
@@ -113,10 +225,10 @@
                 <v-text-field prefix="&#x20B1;" density="compact" variant="solo-filled" type="number"
                   v-model="tuition_fee" model-value="500" flat></v-text-field>
               </v-col>
-            </v-row> -->
+            </v-row>
 
-            
-            <!-- <v-row no-gutters justify="center">
+
+            <v-row no-gutters justify="center">
               <v-col cols="12" md="4">
                 <v-sheet class="mr-8 label-color">Tuition Fee </v-sheet>
               </v-col>
@@ -151,10 +263,10 @@
                 <v-text-field prefix="&#x20B1;" variant="solo-filled" type="number"
                   v-model="tuition_fee" model-value="500" flat></v-text-field>
               </v-col>
-            </v-row> -->
+            </v-row>
           </v-card-text>
         </v-card>
-      </v-col>
+      </v-col> -->
     </v-row>
 
 
@@ -220,6 +332,7 @@ const searchDialog = ref(false)
 
 const dialog = ref(false);
 const bott_nav = ref(null)
+const studentAccounts = ref({});
 
 async function initialize() {
   try {
@@ -228,10 +341,12 @@ async function initialize() {
     if (result) {
       console.log(result)
       //studentDetails.value = result.data;
+
       if (result.length == 0) {
         console.log("No record found");
       } else {
         console.log("Record found")
+        studentAccounts.value = result.data;
       }
     }
   } catch (err) {
@@ -288,5 +403,22 @@ onMounted(async () => {
 
 .label-color {
   color: #757575;
+}
+
+.label-header {
+  font-size: 15px !important;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.student-no {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.student-name {
+  color: green;
+  font-size: 18px;
+  font-weight: bold;
 }
 </style>
