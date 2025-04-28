@@ -17,7 +17,7 @@
     </v-row>
     <v-row>
       <v-col cols="12" md="8">
-        <v-card elevation="0" >
+        <v-card elevation="0">
           <v-toolbar color="transparent" density="compact">
             <v-toolbar-title class="title-color">Payment History</v-toolbar-title>
           </v-toolbar>
@@ -36,7 +36,7 @@
           <v-card-text>
             <v-row no-gutters justify="center">
                 <v-col cols="12" md="4">
-                  <!-- <v-list-subheader class="d-none d-md-block">Tuition Fee</v-list-subheader> -->
+                  
                   <v-sheet class="mr-8 label-color">Tuition Fee </v-sheet>
                 </v-col>
                 <v-col cols="12" md="7">
@@ -45,16 +45,113 @@
               </v-row>
               <v-row no-gutters justify="center">
                 <v-col cols="12" md="4">
-                  <!-- <v-list-subheader class="d-none d-md-block">Tuition Fee</v-list-subheader> -->
+                 
                   <v-sheet class="mr-8 label-color">Discount </v-sheet>
                 </v-col>
                 <v-col cols="12" md="7">
-                  <!-- <v-text-field density="compact" disabled v-model="facultyno"
-                    variant="outlined"></v-text-field> -->
-                    <v-text-field density="compact" disabled  v-model="student_no" variant="solo-filled"
-                    flat></v-text-field>
+                 
+                  <v-text-field density="compact" disabled v-model="facultyno"
+                  variant="outlined"></v-text-field>
                   </v-col>
               </v-row>
+              <v-row no-gutters justify="center">
+                <v-col cols="12" md="4">
+                 
+                  <v-sheet class="mr-8 label-color">Downpayment </v-sheet>
+                </v-col>
+                <v-col cols="12" md="7">
+                 
+                  <v-text-field density="compact" disabled v-model="facultyno"
+                  variant="outlined"></v-text-field>
+                  </v-col>
+              </v-row>
+              <v-row no-gutters justify="center">
+                <v-col cols="12" md="4">
+                 
+                  <v-sheet class="mr-8 label-color">Balance </v-sheet>
+                </v-col>
+                <v-col cols="12" md="7">
+                 
+                  <v-text-field density="compact" disabled v-model="facultyno"
+                  variant="outlined"></v-text-field>
+                  </v-col>
+              </v-row>
+
+
+            <!-- <v-row no-gutters justify="center">
+              <v-col cols="12" md="4">
+                <v-sheet class="mr-8 label-color">Tuition Fee </v-sheet>
+              </v-col>
+              <v-col cols="12" md="7">
+                <v-text-field prefix="&#x20B1;" density="compact" variant="solo-filled" type="number"
+                  v-model="tuition_fee" flat></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row no-gutters justify="center">
+              <v-col cols="12" md="4">
+                <v-sheet class="mr-8 label-color">Discount </v-sheet>
+              </v-col>
+              <v-col cols="12" md="7">
+                <v-text-field prefix="&#x20B1;" density="compact" variant="solo-filled" type="number"
+                  v-model="tuition_fee" flat></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row no-gutters justify="center">
+              <v-col cols="12" md="4">
+                <v-sheet class="mr-8 label-color">Downpayment </v-sheet>
+              </v-col>
+              <v-col cols="12" md="7">
+                <v-text-field prefix="&#x20B1;" density="compact" variant="solo-filled" type="number"
+                  v-model="tuition_fee" flat></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row no-gutters justify="center">
+              <v-col cols="12" md="4">
+                <v-sheet class="mr-8 label-color" >Balance </v-sheet>
+              </v-col>
+              <v-col cols="12" md="7">
+                <v-text-field prefix="&#x20B1;" density="compact" variant="solo-filled" type="number"
+                  v-model="tuition_fee" model-value="500" flat></v-text-field>
+              </v-col>
+            </v-row> -->
+
+            
+            <!-- <v-row no-gutters justify="center">
+              <v-col cols="12" md="4">
+                <v-sheet class="mr-8 label-color">Tuition Fee </v-sheet>
+              </v-col>
+              <v-col cols="12" md="7">
+                <v-text-field prefix="&#x20B1;"  variant="solo-filled" type="number" v-model="tuition_fee" :model-value="18500" flat
+                 ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row no-gutters justify="center">
+              <v-col cols="12" md="4">
+                <v-sheet class="mr-8 label-color">Discount </v-sheet>
+              </v-col>
+              <v-col cols="12" md="7">
+                <v-text-field prefix="&#x20B1;" variant="solo-filled" type="number"
+                  v-model="tuition_fee" flat></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row no-gutters justify="center">
+              <v-col cols="12" md="4">
+                <v-sheet class="mr-8 label-color">Downpayment </v-sheet>
+              </v-col>
+              <v-col cols="12" md="7">
+                <v-text-field prefix="&#x20B1;" variant="solo-filled" type="number"
+                  v-model="tuition_fee" flat></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row no-gutters justify="center">
+              <v-col cols="12" md="4">
+                <v-sheet class="mr-8 label-color" >Balance </v-sheet>
+              </v-col>
+              <v-col cols="12" md="7">
+                <v-text-field prefix="&#x20B1;" variant="solo-filled" type="number"
+                  v-model="tuition_fee" model-value="500" flat></v-text-field>
+              </v-col>
+            </v-row> -->
           </v-card-text>
         </v-card>
       </v-col>
