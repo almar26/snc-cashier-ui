@@ -2,7 +2,7 @@
   <div>
     <BaseBreadcrumb :title="page.title" :icon="page.icon" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
 
-    <v-row>
+    <!-- <v-row>
       <v-col cols="12">
         <v-card elevation="0" class="card-outlined">
           <v-toolbar color="transparent" density="compact">
@@ -14,7 +14,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-    </v-row>
+    </v-row> -->
     <v-row>
       <v-col cols="12" md="3">
         <v-row dense>
@@ -92,7 +92,7 @@
                     <v-sheet class="mr-8 label-color">Tuition Fee </v-sheet>
                   </v-col>
                   <v-col cols="12" md="7">
-                    <v-text-field density="compact" disabled v-model="facultyno"
+                    <v-text-field density="compact" prefix="&#x20B1;" readonly :model-value="tuitionFee.tuition_fee"
                       variant="outlined"></v-text-field></v-col>
                 </v-row>
                 <v-row no-gutters justify="center">
@@ -101,8 +101,8 @@
                     <v-sheet class="mr-8 label-color">Discount </v-sheet>
                   </v-col>
                   <v-col cols="12" md="7">
-
-                    <v-text-field density="compact" disabled v-model="facultyno" variant="outlined"></v-text-field>
+ 
+                    <v-text-field density="compact" prefix="&#x20B1;" readonly :model-value="tuitionFee.discount" variant="outlined"></v-text-field>
                   </v-col>
                 </v-row>
                 <v-row no-gutters justify="center">
@@ -112,7 +112,7 @@
                   </v-col>
                   <v-col cols="12" md="7">
 
-                    <v-text-field density="compact" disabled v-model="facultyno" variant="outlined"></v-text-field>
+                    <v-text-field density="compact" prefix="&#x20B1;" readonly :model-value="tuitionFee.downpayment" variant="outlined"></v-text-field>
                   </v-col>
                 </v-row>
                 <v-row no-gutters justify="center">
@@ -122,7 +122,7 @@
                   </v-col>
                   <v-col cols="12" md="7">
 
-                    <v-text-field density="compact" disabled v-model="facultyno" variant="outlined"></v-text-field>
+                    <v-text-field density="compact" prefix="&#x20B1;" readonly :model-value="tuitionFee.balance" variant="outlined"></v-text-field>
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -333,6 +333,7 @@ const searchDialog = ref(false)
 const dialog = ref(false);
 const bott_nav = ref(null)
 const studentAccounts = ref({});
+const tuitionFee = ref({});
 
 async function initialize() {
   try {
@@ -347,6 +348,7 @@ async function initialize() {
       } else {
         console.log("Record found")
         studentAccounts.value = result.data;
+        tuitionFee.value = result.data.tuition_fee
       }
     }
   } catch (err) {
