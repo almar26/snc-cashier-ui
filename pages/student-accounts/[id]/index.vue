@@ -134,13 +134,14 @@
       <v-col cols="12" md="9">
         <v-card elevation="0" class="card-outlined">
           <v-toolbar color="transparent" density="compact">
-            <v-toolbar-title class="title-color"><v-icon start>mdi-clipboard-text-clock</v-icon> Payment
-              History</v-toolbar-title>
+            <v-toolbar-title class="title-color"><v-icon start>mdi-clipboard-text-clock</v-icon> Tuition Fee Summary</v-toolbar-title>
           </v-toolbar>
           <v-divider></v-divider>
-          <v-card-text>
 
-          </v-card-text>
+            <v-data-table :headers="tuitionFeeHeaders">
+
+            </v-data-table>
+     
         </v-card>
       </v-col>
       <!-- <v-col cols="12" md="12">
@@ -328,6 +329,19 @@ const breadcrumbs = ref([
   },
 ]);
 
+const tuitionFeeHeaders = ref([
+   {
+    title: "Description",
+    sortable: true,
+    key: "description",
+  },
+  { title: "Amount", key: "amount", sortable: false },
+  { title: "Amount Paid", key: "amount_paid", sortable: false },
+  { title: "Date Paid", key: "date_paid", sortable: false },
+  { title: "O.R. Number", key: "or_number", sortable: false },
+  { title: "", key: "actions", align: "end", sortable: false },
+])
+
 const searchDialog = ref(false)
 
 const dialog = ref(false);
@@ -394,7 +408,7 @@ onMounted(async () => {
 }
 
 .card-outlined {
-  border: 1px solid rgba(128, 128, 128, 0.274);
+  /* border: 1px solid rgba(128, 128, 128, 0.274); */
   border-radius: 15px;
 }
 
@@ -422,5 +436,26 @@ onMounted(async () => {
   color: green;
   font-size: 18px;
   font-weight: bold;
+}
+
+:deep() .v-table .v-table__wrapper>table>thead>tr>th {
+  border-right: thin solid rgba(var(--v-border-color), var(--v-border-opacity));
+  border-bottom: thick solid rgba(var(--v-border-color), var(--v-border-opacity));
+  font-weight: bold;
+  /* background-color: #04aa6d;
+  color: white; */
+}
+
+:deep() .v-table .v-table__wrapper>table>tbody>tr>td:not(:last-child),
+.v-table .v-table__wrapper>table>tbody>tr>th:not(:last-child) {
+  border-right: thin solid rgba(var(--v-border-color), var(--v-border-opacity));
+}
+
+:deep() .v-table .v-table__wrapper>table>tbody>tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+:deep() .v-table .v-table__wrapper>table>tbody>tr:hover {
+  background-color: #f2f2f2;
 }
 </style>
