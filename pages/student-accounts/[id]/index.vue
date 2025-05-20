@@ -33,48 +33,48 @@
                 <p class="student-name">{{ studentAccounts.first_name }} {{ studentAccounts.last_name }}</p> -->
                 <v-row dense justify="center" class="text-left">
                   <v-col cols="12" md="4">
-                    <v-sheet class="mr- label-color text-uppercase">Student No </v-sheet>
+                    <v-sheet class="mr- label-color">Student No </v-sheet>
                     <!-- <v-list-subheader>Tuition Fee 1</v-list-subheader> -->
                   </v-col>
                   <v-col cols="12" md="7">
-                   {{ studentAccounts.student_no }}
-                   </v-col>
+                    {{ studentAccounts.student_no }}
+                  </v-col>
                 </v-row>
                 <v-row dense justify="center" class="text-left">
                   <v-col cols="12" md="4">
-                    <v-sheet class="mr-5 label-color text-uppercase">Name </v-sheet>
+                    <v-sheet class="mr-5 label-color">Name </v-sheet>
                     <!-- <v-list-subheader>Tuition Fee 1</v-list-subheader> -->
                   </v-col>
                   <v-col cols="12" md="7">
                     {{ studentAccounts.last_name }}, {{ studentAccounts.first_name }} {{ studentAccounts.middle_name }}
-                   </v-col>
+                  </v-col>
                 </v-row>
                 <v-row dense justify="center" class="text-left">
                   <v-col cols="12" md="4">
-                    <v-sheet class="mr-5 label-color text-uppercase">Course </v-sheet>
+                    <v-sheet class="mr-5 label-color">Course </v-sheet>
                     <!-- <v-list-subheader>Tuition Fee 1</v-list-subheader> -->
                   </v-col>
                   <v-col cols="12" md="7">
                     {{ studentAccounts.course_code }}-{{ studentAccounts.section }}
-                   </v-col>
+                  </v-col>
                 </v-row>
                 <v-row dense justify="center" class="text-left">
                   <v-col cols="12" md="4">
-                    <v-sheet class="mr-5 label-color text-uppercase">Setion </v-sheet>
+                    <v-sheet class="mr-5 label-color">Setion </v-sheet>
                     <!-- <v-list-subheader>Tuition Fee 1</v-list-subheader> -->
                   </v-col>
                   <v-col cols="12" md="7">
                     {{ studentAccounts.section }}
-                   </v-col>
+                  </v-col>
                 </v-row>
                 <v-row dense justify="center" class="text-left">
                   <v-col cols="12" md="4">
-                    <v-sheet class="mr-5 label-color text-uppercase">Contact # </v-sheet>
+                    <v-sheet class="mr-5 label-color">Contact # </v-sheet>
                     <!-- <v-list-subheader>Tuition Fee 1</v-list-subheader> -->
                   </v-col>
                   <v-col cols="12" md="7">
                     {{ studentAccounts.contact_number }}
-                   </v-col>
+                  </v-col>
                 </v-row>
               </v-card-text>
             </v-card>
@@ -101,8 +101,9 @@
                     <v-sheet class="mr-8 label-color">Discount </v-sheet>
                   </v-col>
                   <v-col cols="12" md="7">
- 
-                    <v-text-field density="compact" prefix="&#x20B1;" readonly :model-value="tuitionFee.discount" variant="outlined"></v-text-field>
+
+                    <v-text-field density="compact" prefix="&#x20B1;" readonly :model-value="tuitionFee.discount"
+                      variant="outlined"></v-text-field>
                   </v-col>
                 </v-row>
                 <v-row no-gutters justify="center">
@@ -112,7 +113,8 @@
                   </v-col>
                   <v-col cols="12" md="7">
 
-                    <v-text-field density="compact" prefix="&#x20B1;" readonly :model-value="tuitionFee.downpayment" variant="outlined"></v-text-field>
+                    <v-text-field density="compact" prefix="&#x20B1;" readonly :model-value="tuitionFee.downpayment"
+                      variant="outlined"></v-text-field>
                   </v-col>
                 </v-row>
                 <v-row no-gutters justify="center">
@@ -122,7 +124,8 @@
                   </v-col>
                   <v-col cols="12" md="7">
 
-                    <v-text-field density="compact" prefix="&#x20B1;" readonly :model-value="tuitionFee.balance" variant="outlined"></v-text-field>
+                    <v-text-field density="compact" prefix="&#x20B1;" readonly :model-value="tuitionFee.balance"
+                      variant="outlined"></v-text-field>
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -131,17 +134,75 @@
         </v-row>
 
       </v-col>
-      <v-col cols="12" md="9">
+      <v-col cols="12" md="6">
         <v-card elevation="0" class="card-outlined">
           <v-toolbar color="transparent" density="compact">
-            <v-toolbar-title class="title-color"><v-icon start>mdi-clipboard-text-clock</v-icon> Tuition Fee Summary</v-toolbar-title>
+            <v-toolbar-title class="title-color"><v-icon start>mdi-clipboard-text-clock</v-icon> Tuition Fee
+              Summary</v-toolbar-title>
           </v-toolbar>
           <v-divider></v-divider>
+          <v-card-text>
+            <v-divider></v-divider>
+          <v-data-table :headers="tuitionFeeHeaders" :items="tuitionFeeSummary" density="compact" hide-default-footer>
+            <template v-slot:[`item.payment_amount`]="{ item }">
+              {{ formatCurrency(item.payment_amount) }}
+            </template>
+             <template v-slot:[`item.amount_paid`]="{ item }">
+              {{ formatCurrency(item.amount_paid) }}
+            </template>
+            <template v-slot:[`item.status`]="{ item }">
+              <v-chip label size="small" color="warning" v-if="item.payment_status == 'partial'">
+                Partial
+              </v-chip>
+              <v-chip label size="small" color="green" v-if="item.payment_status == 'paid'">
+                Paid
+              </v-chip>
+              <!-- <v-chip label size="small" color="warning" v-if="item.amount_paid < item.payment_amount && item.amount_paid != 0">
+               Partial
+              </v-chip>
+              <v-chip label size="small" color="green" v-if="item.amount_paid == item.payment_amount">
+                Paid
+              </v-chip> -->
+            </template>
+            <template v-slot:[`item.actions`]="{ item }">
+                <v-btn size="small" variant="tonal" color="purple"><v-icon>mdi-calculator</v-icon></v-btn>
+            </template>
+          </v-data-table>
+          <v-divider></v-divider>
+        </v-card-text>
 
-            <v-data-table :headers="tuitionFeeHeaders">
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="3">
+        <v-card elevation="0" class="card-outlined">
+          <v-toolbar color="transparent" density="compact">
+            <v-toolbar-title class="title-color">Tuition Fee Details</v-toolbar-title>
+          </v-toolbar>
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-row no-gutters justify="center">
+              <v-col cols="12" md="11">
+                <v-text-field  label="Previous Charges" prefix="&#x20B1;" readonly
+                  :model-value="tuitionFee.tuition_fee" variant="outlined"></v-text-field></v-col>
+            </v-row>
+            <v-row no-gutters justify="center">
+              <v-col cols="12" md="11">
+                <v-text-field  label="Current Amoun Due" prefix="&#x20B1;" readonly
+                  :model-value="tuitionFee.discount" variant="outlined"></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row no-gutters justify="center">
+              <v-col cols="12" md="11">
+                <v-text-field  label="Total Amount Due" prefix="&#x20B1;" readonly
+                  :model-value="tuitionFee.downpayment" variant="outlined"></v-text-field>
+              </v-col>
+            </v-row>
 
-            </v-data-table>
-     
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions class="ma-2">
+            <v-btn variant="flat" color="primary" block>Pay</v-btn>
+          </v-card-actions>
         </v-card>
       </v-col>
       <!-- <v-col cols="12" md="12">
@@ -330,16 +391,18 @@ const breadcrumbs = ref([
 ]);
 
 const tuitionFeeHeaders = ref([
-   {
+  {
     title: "Description",
     sortable: true,
-    key: "description",
+    key: "payment_name",
   },
-  { title: "Amount", key: "amount", sortable: false },
-  { title: "Amount Paid", key: "amount_paid", sortable: false },
+  { title: "Amount", key: "payment_amount", align: "center", sortable: false },
+  { title: "Due Date", key: "due_date", align: "center", sortable: false },
+  { title: "Amount Paid", key: "amount_paid", align: "center", sortable: false },
   { title: "Date Paid", key: "date_paid", sortable: false },
   { title: "O.R. Number", key: "or_number", sortable: false },
-  { title: "", key: "actions", align: "end", sortable: false },
+  { title: "Status", key: "status", align: "center", sortable: false },
+  { title: "", key: "actions", align: "center", sortable: false },
 ])
 
 const searchDialog = ref(false)
@@ -348,6 +411,7 @@ const dialog = ref(false);
 const bott_nav = ref(null)
 const studentAccounts = ref({});
 const tuitionFee = ref({});
+const tuitionFeeSummary = ref([])
 
 async function initialize() {
   try {
@@ -371,9 +435,38 @@ async function initialize() {
   }
 }
 
+async function getTuitionFeeSummary() {
+  try {
+    console.log("Tuition Fee ID: ", tuitionFee.value?.documentId)
+    //const tuition_id = tuitionFee.value?.documentId;
+    let result = await $fetch(`/api/payment/list/${route.params.id}`);
+
+    if (result) {
+      console.log(result);
+      if (result.length == 0) {
+        console.log("No Tuition Fee Summary record found");
+      } else {
+        console.log("Tuition Fee Summary Found");
+        tuitionFeeSummary.value = result;
+      }
+    }
+  } catch (err) {
+    console.error("Failed to fetch data: ", err);
+    throw err;
+  }
+}
+
+function formatCurrency(value) {
+  return new Intl.NumberFormat('en-PH', {
+    style: 'currency',
+    currency: 'PHP'
+  }).format(value)
+}
+
 
 onMounted(async () => {
   await initialize();
+  await getTuitionFeeSummary();
   hotkeys('f1, ctrl+a, f4', (event, handler) => {
     switch (handler.key) {
       case 'f1':
