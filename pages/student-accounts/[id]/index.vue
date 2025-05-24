@@ -79,16 +79,16 @@
                   <v-card-text>
                     <v-row>
                       <v-col cols="12" md="4">
-                        <v-text-field label="Previous Charges" prefix="&#x20B1;" variant="solo-filled"
-                          :model-value="tuitionFee.tuition_fee" flat></v-text-field>
+                        <v-text-field label="Previous Due" prefix="&#x20B1;" variant="solo-filled"
+                          :model-value="previousDue" flat></v-text-field>
                       </v-col>
                       <v-col cols="12" md="4">
                         <v-text-field label="Current Amount Due" prefix="&#x20B1;" readonly
-                          :model-value="tuitionFee.tuition_fee" variant="solo-filled" flat></v-text-field>
+                          :model-value="currentAmountDue" variant="solo-filled" flat></v-text-field>
                       </v-col>
                       <v-col cols="12" md="4">
                         <v-text-field label="Total Amount Due" prefix="&#x20B1;" readonly
-                          :model-value="tuitionFee.tuition_fee" variant="solo-filled" flat></v-text-field>
+                          :model-value="totalAmountDue" variant="solo-filled" flat></v-text-field>
                       </v-col>
                     </v-row>
                   </v-card-text>
@@ -260,7 +260,7 @@
       <v-tooltip text="Pay" location="top">
         <template v-slot:activator="{ props }">
           <v-btn v-bind="props" value="pay" icon>
-            <v-icon>mdi-plus</v-icon>
+            <v-icon>mdi-cash-multiple</v-icon>
             Pay
           </v-btn>
         </template>
@@ -321,6 +321,11 @@ const tuitionFeeFormatted = ref(null);
 const discountFormatted = ref(null);
 const downpaymentFormatted = ref(null);
 const balanceFormatted = ref(null);
+const semester = ref("1st Semester");
+const sy = ref("2024-2025");
+const previousDue = ref(0);
+const currentAmountDue = ref(0);
+const totalAmountDue = ref(0);
 
 async function initialize() {
   try {
@@ -369,6 +374,22 @@ async function getTuitionFeeSummary() {
   }
 }
 
+async function getPaymentDues() {
+  try {
+    let result = await $fetch(`/api/payment/dues?student_id=${route.params.id}&semester=${semester.value}&sy=${sy.value}`);
+
+    if (result) {
+      console.log("Payment Due: ", result);
+      previousDue.value = formatNumber(result.previousDue);
+      currentAmountDue.value = formatNumber(result.currentDue);
+      totalAmountDue.value = formatNumber(result.totalAmountDue);
+    }
+  } catch (err) {
+    console.error("Failed to fetch data: ", err);
+    throw err;
+  }
+}
+
 function formatCurrency(value) {
   return new Intl.NumberFormat('en-PH', {
     style: 'currency',
@@ -387,6 +408,7 @@ function formatNumber(value) {
 onMounted(async () => {
   await initialize();
   await getTuitionFeeSummary();
+  await getPaymentDues();
   hotkeys('f1, ctrl+a, f4', (event, handler) => {
     switch (handler.key) {
       case 'f1':
