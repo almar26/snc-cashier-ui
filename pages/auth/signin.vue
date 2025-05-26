@@ -78,6 +78,12 @@ async function login() {
     if (authenticated.value == true) {
       //console.log("authenticate: ", authenticated.value)
       loading.value = false;
+
+      // Fullscreen request
+      const el = document.documentElement
+      if (el.requestFullscreen) {
+        await el.requestFullscreen();
+      }
       // Navigate to admin pagee
       router.push("/");
     }
