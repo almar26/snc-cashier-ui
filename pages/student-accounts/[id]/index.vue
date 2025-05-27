@@ -306,18 +306,41 @@
           <v-row>
             <v-col cols="12" md="7">
               <v-divider></v-divider>
-              <v-data-table v-model="selected" :headers="paymentHeaders" :items="unpaidTuitions" item-value="id" show-select density="compact" return-object
+              <v-data-table v-model="selected" :headers="paymentHeaders" :item-selectable="isSelectable"
+                hide-default-footer :items="unpaidTuitions" item-value="id" show-select density="compact" return-object
                 class="elevation-0">
-                <template #bottom>
+                <template v-slot:[`item.payment_amount`]="{ item }">
+                  {{ formatCurrency(item.payment_amount) }}
+                </template>
+                <template v-slot:[`item.amount_paid`]="{ item }">
+                  {{ formatCurrency(item.amount_paid) }}
+                </template>
+                <template v-slot:[`item.balance`]="{ item }">
+                  {{ formatCurrency(item.balance) }}
+                </template>
+                <template v-slot:[`item.payment_status`]="{ item }">
+                  <v-chip label size="small" color="warning" v-if="item.payment_status == 'partial'">
+                    Partial
+                  </v-chip>
+                  <v-chip label size="small" color="green" v-else-if="item.payment_status == 'paid'">
+                    Paid
+                  </v-chip>
+                  <v-chip label size="small" color="grey" v-else>
+                    Unpaid
+                  </v-chip>
+
+                </template>
+                <!-- <template #bottom>
                   <v-row justify="end" class="pa-4">
                     <v-col cols="auto">
                       <strong>Total Amount:</strong> {{ totalAmount }}
                     </v-col>
                   </v-row>
-                </template>
+                </template> -->
               </v-data-table>
+              <v-divider></v-divider>
 
-              <!-- <pre>{{ selected }}</pre> -->
+
 
             </v-col>
 
@@ -326,14 +349,14 @@
             <v-col v-cols="12" md="5">
               <v-card elevation="0">
                 <v-card-text>
-                  <v-text-field variant="solo-filled" v-model="totalAmount" label="Total Amount" class="custom-outlined"
+                  <v-text-field variant="solo-filled" v-model="paymentTotalAmount"  :model-value="formatNumber(paymentTotalAmount)" prefix="&#x20B1;" readonly label="Total Amount" class="custom-outlined"
                     flat></v-text-field>
-                  <v-text-field variant="solo-filled" label="Change" class="custom-outlined" flat></v-text-field>
-                  <v-text-field variant="outlined" label="Cash" class="custom-outlined" flat></v-text-field>
+                  <v-text-field variant="solo-filled" label="Change" v-model="change" :model-value="formatNumber(change)" class="custom-outlined" readonly prefix="&#x20B1;" flat></v-text-field>
+                  <v-text-field variant="outlined" type="number" label="Cash" class="custom-outlined" v-model="cashPayment" prefix="&#x20B1;" flat></v-text-field>
                 </v-card-text>
 
                 <v-card-actions>
-                  <v-btn color="primary" variant="flat" block>Pay Now</v-btn>
+                  <v-btn color="primary" variant="flat" @click="payNow" block>Pay Now</v-btn>
                 </v-card-actions>
               </v-card>
             </v-col>
@@ -392,11 +415,11 @@ const items = ref([
 ])
 
 const paymentHeaders = [
-  { title: 'Name', key: 'payment_name' },
-  { title: 'Amount', key: 'payment_amount' },
-  { title: 'Amount Paid', key: 'amount_paid' },
-  { title: 'Balance', key: 'balance' },
-  { title: 'Payment Status', key: 'payment_status' },
+  { title: 'Name', key: 'payment_name', sortable: false },
+  { title: 'Amount', key: 'payment_amount', sortable: false },
+  { title: 'Amount Paid', key: 'amount_paid', sortable: false },
+  { title: 'Balance', key: 'balance', sortable: false },
+  { title: 'Payment Status', align: "center", key: 'payment_status', sortable: false },
 ]
 
 const unpaidTuitions = ref([])
@@ -455,6 +478,9 @@ const sy = ref("2024-2025");
 const previousDue = ref(0);
 const currentAmountDue = ref(0);
 const totalAmountDue = ref(0);
+//const change = ref(0);
+const cashPayment = ref(0)
+
 
 async function initialize() {
   try {
@@ -489,9 +515,23 @@ async function initialize() {
 //   }, 0)
 // )
 
-const totalAmount = computed(() =>
-  selected.value.reduce((sum, item) => sum + item.balance, 0)
-)
+// Disable selection if item.status === "paid"
+const isSelectable = (item) => item.payment_status !== 'paid';
+
+// const paymentTotalAmount = computed(() =>
+//   selected.value.reduce((sum, item) => sum + item.balance, 0)
+// )
+const paymentTotalAmount = computed(() => {
+  return selected.value.reduce((sum, item) => {
+    return sum + item.balance
+  }, 0)
+})
+
+// Computed change
+const change = computed(() => {
+  const diff = cashPayment.value - paymentTotalAmount.value
+  return diff >=0 ? diff : 0
+})
 
 async function getTuitionFeeSummary() {
   try {
@@ -544,6 +584,16 @@ function formatNumber(value) {
     minimumFractionDigits: 2,
     minimumFractionDigits: 2,
   }).format(value)
+}
+
+async function payNow() {
+  let payload = {
+    payment_total_amount: paymentTotalAmount.value,
+    change: parseFloat(change.value?.toFixed(2)),
+    cash_payment: parseFloat(cashPayment.value)
+  }
+
+  console.log(payload)
 }
 
 
