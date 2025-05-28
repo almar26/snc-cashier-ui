@@ -133,8 +133,26 @@
                       <template v-slot:[`item.payment_amount`]="{ item }">
                         {{ formatCurrency(item.payment_amount) }}
                       </template>
+                      <template v-slot:[`item.due_date`]="{ item }">
+                        <div v-if="item.due_date != null">
+                          {{ item.due_date }} <v-btn icon="mdi-pencil" size="x-small" variant="text" color="warning"></v-btn>
+                        </div>
+                        <div v-else-if="item.payment_name == 'Downpayment'">
+                        </div>
+                        <div v-else>
+                          <v-btn color="blue" variant="text" size="x-small" icon="mdi-calendar"></v-btn>
+                        </div>
+                      </template>
                       <template v-slot:[`item.amount_paid`]="{ item }">
                         {{ formatCurrency(item.amount_paid) }}
+                      </template>
+                       <template v-slot:[`item.or_number`]="{ item }">
+                        <div v-if="item.or_number == ''">
+                          <v-btn icon="mdi-receipt-text-plus" size="x-small" variant="text" color="blue"></v-btn>
+                        </div>
+                        <div v-else>
+                          {{ item.or_number }}  <v-btn color="warning" variant="text" size="x-small" icon="mdi-receipt-text-edit"></v-btn>
+                        </div>
                       </template>
                       <template v-slot:[`item.status`]="{ item }">
                         <v-chip label size="small" color="warning" v-if="item.payment_status == 'partial'">
@@ -275,6 +293,8 @@
           <v-toolbar-title class="title-color">
             <v-icon start>mdi-cash-multiple</v-icon> Select Payment
           </v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn icon="mdi-close" @click="paymentDialog = false"></v-btn>
         </v-toolbar>
         <v-divider></v-divider>
         <v-card-text>
@@ -340,7 +360,7 @@
               </v-data-table>
               <v-divider></v-divider>
 
-
+            <!-- <pre>{{ selected }}</pre> -->
 
             </v-col>
 
@@ -349,14 +369,14 @@
             <v-col v-cols="12" md="5">
               <v-card elevation="0">
                 <v-card-text>
-                  <v-text-field variant="solo-filled" v-model="paymentTotalAmount"  :model-value="formatNumber(paymentTotalAmount)" prefix="&#x20B1;" readonly label="Total Amount" class="custom-outlined"
+                  <v-text-field variant="solo-filled" v-model="selectedTotalAmount"  :model-value="formatNumber(selectedTotalAmount)" prefix="&#x20B1;" readonly label="Total Amount" class="custom-outlined"
                     flat></v-text-field>
                   <v-text-field variant="solo-filled" label="Change" v-model="change" :model-value="formatNumber(change)" class="custom-outlined" readonly prefix="&#x20B1;" flat></v-text-field>
                   <v-text-field variant="outlined" type="number" label="Cash" class="custom-outlined" v-model="cashPayment" prefix="&#x20B1;" flat></v-text-field>
                 </v-card-text>
 
                 <v-card-actions>
-                  <v-btn color="primary" variant="flat" @click="payNow" block>Pay Now</v-btn>
+                  <v-btn color="primary" variant="flat" :disabled="cashPayment < selectedTotalAmount" @click="payNow" block>Pay Now</v-btn>
                 </v-card-actions>
               </v-card>
             </v-col>
@@ -456,7 +476,7 @@ const tuitionFeeHeaders = ref([
   { title: "Due Date", key: "due_date", align: "center", sortable: false },
   { title: "Amount Paid", key: "amount_paid", align: "center", sortable: false },
   { title: "Date Paid", key: "date_paid", sortable: false },
-  { title: "O.R. Number", key: "or_number", sortable: false },
+  { title: "O.R. Number", key: "or_number", align: "center", sortable: false },
   { title: "Status", key: "status", align: "center", sortable: false },
   { title: "", key: "actions", align: "center", sortable: false },
 ])
@@ -487,13 +507,13 @@ async function initialize() {
     let result = await $fetch(`/api/tuition-fee/account/${route.params.id}`);
 
     if (result) {
-      console.log(result)
+      //console.log(result)
       //studentDetails.value = result.data;
 
       if (result.length == 0) {
         console.log("No record found");
       } else {
-        console.log("Record found")
+        //console.log("Record found")
         studentAccounts.value = result.data;
         tuitionFee.value = result.data.tuition_fee
         tuitionFeeFormatted.value = formatNumber(result.data.tuition_fee.tuition_fee)
@@ -521,7 +541,7 @@ const isSelectable = (item) => item.payment_status !== 'paid';
 // const paymentTotalAmount = computed(() =>
 //   selected.value.reduce((sum, item) => sum + item.balance, 0)
 // )
-const paymentTotalAmount = computed(() => {
+const selectedTotalAmount = computed(() => {
   return selected.value.reduce((sum, item) => {
     return sum + item.balance
   }, 0)
@@ -529,22 +549,22 @@ const paymentTotalAmount = computed(() => {
 
 // Computed change
 const change = computed(() => {
-  const diff = cashPayment.value - paymentTotalAmount.value
+  const diff = cashPayment.value - selectedTotalAmount.value
   return diff >=0 ? diff : 0
 })
 
 async function getTuitionFeeSummary() {
   try {
-    console.log("Tuition Fee ID: ", tuitionFee.value?.documentId)
+    //console.log("Tuition Fee ID: ", tuitionFee.value?.documentId)
     //const tuition_id = tuitionFee.value?.documentId;
     let result = await $fetch(`/api/payment/list/${route.params.id}`);
 
     if (result) {
-      console.log(result);
+      //console.log(result);
       if (result.length == 0) {
         console.log("No Tuition Fee Summary record found");
       } else {
-        console.log("Tuition Fee Summary Found");
+        //console.log("Tuition Fee Summary Found");
         tuitionFeeSummary.value = result;
       }
     }
@@ -559,7 +579,7 @@ async function getPaymentDues() {
     let result = await $fetch(`/api/payment/dues?student_id=${route.params.id}&semester=${semester.value}&sy=${sy.value}`);
 
     if (result) {
-      console.log("Payment Due: ", result);
+      //console.log("Payment Due: ", result);
       previousDue.value = formatNumber(result.previousDue);
       currentAmountDue.value = formatNumber(result.currentDue);
       totalAmountDue.value = formatNumber(result.totalAmountDue);
@@ -587,13 +607,31 @@ function formatNumber(value) {
 }
 
 async function payNow() {
+  const now = new Date();
+  let paymentStatus = "";
+  const formattedDate = now.toISOString().split('T')[0];
+    if (selectedTotalAmount.value <= cashPayment.value) {
+    console.log("Payment status: Paid")
+    paymentStatus = "paid"
+  }
+  const simplified = selected.value.map(item => ({
+    id: item.id,
+    amount_paid: item.amount_paid,
+    date_paid: formattedDate,
+    payment_status: paymentStatus
+  }))
+
+
+
   let payload = {
-    payment_total_amount: paymentTotalAmount.value,
+    selected_total_amount: selectedTotalAmount.value,
     change: parseFloat(change.value?.toFixed(2)),
-    cash_payment: parseFloat(cashPayment.value)
+    cash_payment: parseFloat(cashPayment.value),
+    list_payment: simplified
   }
 
-  console.log(payload)
+  console.log("Selected", payload)
+  //console.log("Selected: ", simplified)
 }
 
 

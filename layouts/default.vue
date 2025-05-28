@@ -163,9 +163,9 @@ const logout = () => {
 onMounted(() => {
   const fnameInitial = userData.value.first_name;
   const lnameInitial = userData.value.last_name;
-  console.log(userData.value.first_name)
-  console.log(fnameInitial.substring(0, 1)+lnameInitial.substring(0,1));
-  console.log("User Initial: ", userInitial.value)
+  //console.log(userData.value.first_name)
+  //console.log(fnameInitial.substring(0, 1)+lnameInitial.substring(0,1));
+  //console.log("User Initial: ", userInitial.value)
 })
 
 // const color = computed(() => {
