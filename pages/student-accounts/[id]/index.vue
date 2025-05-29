@@ -135,7 +135,8 @@
                       </template>
                       <template v-slot:[`item.due_date`]="{ item }">
                         <div v-if="item.due_date != null">
-                          {{ item.due_date }} <v-btn icon="mdi-pencil" size="x-small" variant="text" color="warning"></v-btn>
+                          {{ item.due_date }} <v-btn icon="mdi-pencil" size="x-small" variant="text"
+                            color="warning"></v-btn>
                         </div>
                         <div v-else-if="item.payment_name == 'Downpayment'">
                         </div>
@@ -146,12 +147,16 @@
                       <template v-slot:[`item.amount_paid`]="{ item }">
                         {{ formatCurrency(item.amount_paid) }}
                       </template>
-                       <template v-slot:[`item.or_number`]="{ item }">
+                      <template v-slot:[`item.balance`]="{ item }">
+                        {{ formatCurrency(item.balance) }}
+                      </template>
+                      <template v-slot:[`item.or_number`]="{ item }">
                         <div v-if="item.or_number == ''">
                           <v-btn icon="mdi-receipt-text-plus" size="x-small" variant="text" color="blue"></v-btn>
                         </div>
                         <div v-else>
-                          {{ item.or_number }}  <v-btn color="warning" variant="text" size="x-small" icon="mdi-receipt-text-edit"></v-btn>
+                          {{ item.or_number }} <v-btn color="warning" variant="text" size="x-small"
+                            icon="mdi-receipt-text-edit"></v-btn>
                         </div>
                       </template>
                       <template v-slot:[`item.status`]="{ item }">
@@ -287,6 +292,7 @@
 
 
     <!-- DIALOG BOX -->
+    <!-- Payment Method 1 -->
     <v-dialog v-model="paymentDialog" width="1300">
       <v-card>
         <v-toolbar color="transparent" density="compact">
@@ -360,7 +366,7 @@
               </v-data-table>
               <v-divider></v-divider>
 
-            <!-- <pre>{{ selected }}</pre> -->
+              <!-- <pre>{{ selected }}</pre> -->
 
             </v-col>
 
@@ -369,14 +375,19 @@
             <v-col v-cols="12" md="5">
               <v-card elevation="0">
                 <v-card-text>
-                  <v-text-field variant="solo-filled" v-model="selectedTotalAmount"  :model-value="formatNumber(selectedTotalAmount)" prefix="&#x20B1;" readonly label="Total Amount" class="custom-outlined"
+                  <v-text-field variant="solo-filled" v-model="selectedTotalAmount"
+                    :model-value="formatNumber(selectedTotalAmount)" prefix="&#x20B1;" readonly label="Total Amount"
+                    class="custom-outlined" flat></v-text-field>
+                  <v-text-field variant="solo-filled" label="Change" v-model="change"
+                    :model-value="formatNumber(change)" class="custom-outlined" readonly prefix="&#x20B1;"
                     flat></v-text-field>
-                  <v-text-field variant="solo-filled" label="Change" v-model="change" :model-value="formatNumber(change)" class="custom-outlined" readonly prefix="&#x20B1;" flat></v-text-field>
-                  <v-text-field variant="outlined" type="number" label="Cash" class="custom-outlined" v-model="cashPayment" prefix="&#x20B1;" flat></v-text-field>
+                  <v-text-field variant="outlined" type="number" label="Cash" class="custom-outlined"
+                    v-model="cashPayment" prefix="&#x20B1;" flat></v-text-field>
                 </v-card-text>
 
                 <v-card-actions>
-                  <v-btn color="primary" variant="flat" :disabled="cashPayment < selectedTotalAmount" @click="payNow" block>Pay Now</v-btn>
+                  <v-btn color="primary" variant="flat" :disabled="cashPayment < selectedTotalAmount" @click="payNow"
+                    block>Pay Now</v-btn>
                 </v-card-actions>
               </v-card>
             </v-col>
@@ -384,6 +395,173 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+
+    <!-- Payment Method 2 -->
+    <v-dialog v-model="payment2Dialog" width="1200">
+      <v-card>
+        <v-toolbar color="transparent" density="compact">
+          <v-toolbar-title class="title-color">
+            <v-icon start>mdi-cash-multiple</v-icon> Select Payment 2
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn icon="mdi-close" @click="payment2Dialog = false"></v-btn>
+        </v-toolbar>
+        <v-divider></v-divider>
+        <v-card-text>
+          <v-row>
+            <v-col cols="12" md="8">
+              <v-divider></v-divider>
+
+              <!-- <v-data-table :headers="paymentHeaders" :items="unpaidTuitions" item-value="id" show-select v-model="selected" return-object>
+                <template #item.amount_paid="{ item }">
+                  ₱{{ item.amount_paid }}
+                </template>
+              </v-data-table> -->
+              <v-data-table v-model="selected" :headers="paymentHeaders" :item-selectable="isSelectable"
+                hide-default-footer :items="unpaidTuitions" item-value="id" show-select density="compact" return-object
+                class="elevation-0">
+                <template v-slot:[`item.payment_amount`]="{ item }">
+                  {{ formatCurrency(item.payment_amount) }}
+                </template>
+                <template v-slot:[`item.amount_paid`]="{ item }">
+                  {{ formatCurrency(item.amount_paid) }}
+                </template>
+                <template v-slot:[`item.balance`]="{ item }">
+                  {{ formatCurrency(item.balance) }}
+                </template>
+                <template v-slot:[`item.payment_status`]="{ item }">
+                  <v-chip label size="small" color="warning" v-if="item.payment_status == 'partial'">
+                    Partial
+                  </v-chip>
+                  <v-chip label size="small" color="green" v-else-if="item.payment_status == 'paid'">
+                    Paid
+                  </v-chip>
+                  <v-chip label size="small" color="grey" v-else>
+                    Unpaid
+                  </v-chip>
+
+                </template>
+
+              </v-data-table>
+              <v-divider></v-divider>
+
+              <!-- <pre>{{ selected }}</pre> -->
+
+            </v-col>
+
+            <v-divider vertical></v-divider>
+
+            <v-col v-cols="12" md="4">
+              <v-card elevation="0">
+                <v-card-title>Selected Payment</v-card-title>
+                <v-divider></v-divider>
+                <v-card-text>
+                  <!-- <pre>{{ selected }}</pre> -->
+                  <!-- <div v-for="(item, index) in selected" :key="item.id">
+                      {{ item.payment_name }}
+                      </div> -->
+
+                  <!-- <div v-for="(item, index) in selected" :key="item.id">
+                    <v-list density="compact">
+                      <v-list-item>
+                        <v-list-item-title>{{ item.payment_name }}</v-list-item-title>
+                        <template v-slot:append>
+                          <span> {{ formatCurrency(item.balance) }}</span>
+                        </template>
+                      </v-list-item>
+                      <v-divider></v-divider>
+
+                    </v-list>
+                  </div> -->
+                  <div v-if="selected.length !== 0">
+                    <v-row dense v-for="(item, i) in selected" :key="i">
+                      <v-col cols="7">{{ item.payment_name }}</v-col>
+                      <v-col cols="5" class="text-right">{{ formatCurrency(item.balance) }}</v-col>
+                    </v-row>
+                  </div>
+                  <div v-else>
+                    <p class="text-center">No selected payment</p>
+                  </div>
+
+
+
+                  <v-row class="mt-5">
+                    <v-divider></v-divider>
+                    <v-divider></v-divider>
+                    <v-col cols="7" class="font-weight-bold">Total Amount</v-col>
+                    <v-col cols="5" class="text-right font-weight-bold total-amount-style">{{
+                      formatCurrency(selectedTotalAmount) }}</v-col>
+                  </v-row>
+
+                  <!-- <v-text-field variant="solo-filled" v-model="selectedTotalAmount"
+                    :model-value="formatNumber(selectedTotalAmount)" prefix="&#x20B1;" readonly label="Total Amount"
+                    class="custom-outlined mt-5" flat></v-text-field> -->
+
+                  <!-- <v-text-field variant="solo-filled" label="Change" v-model="change"
+                    :model-value="formatNumber(change)" class="custom-outlined" readonly prefix="&#x20B1;"
+                    flat></v-text-field>
+                  <v-text-field variant="outlined" type="number" label="New Amount Paid" class="custom-outlined"
+                    v-model.number="newAmount" prefix="&#x20B1;" flat></v-text-field> -->
+                </v-card-text>
+
+                <v-card-actions>
+                  <!-- <v-btn color="primary" variant="flat" @click="updateAmountPaid" block>Update Selected</v-btn> -->
+                  <v-btn color="primary" variant="flat" block :disabled="selected.length === 0" @click="openDialog">
+                    Edit Amount Paid ({{ selected.length }})
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="dialog" max-width="600">
+      <v-card>
+
+
+        <v-toolbar density="compact">
+          <v-toolbar-title><v-icon size="25" start>mdi-pencil</v-icon> Edit Amount Paid</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn icon="mdi-close" @click="dialog = false"></v-btn>
+        </v-toolbar>
+        <v-divider></v-divider>
+
+        <v-card-text>
+          <h2>Total Amount: {{ selectedTotalAmount }}</h2>
+          <div v-for="(item, index) in editItems" :key="item.id" class="mb-4">
+
+            <div class="text-sm mb-1 font-medium">{{ item.payment_name }}</div>
+            <div class="text-sm mb-1 font-medium">Amount Balance: {{ formatCurrency(item.balance) }}</div>
+            <div>Payment Type:
+              <span v-if="editItems[index].amount_paid >= item.balance">Paid</span>
+              <span
+                v-else-if="editItems[index].amount_paid < item.balance && editItems[index].amount_paid > 0">Partial</span>
+              <span v-else>Unpaid</span>
+            </div>
+            <v-row class="mt-3">
+              <v-col cols="3"><v-text-field label="Status" v-model="editItems[index].payment_status" variant="solo-filled" flat></v-text-field></v-col>
+              <v-col cols="9">  <v-text-field v-model.number="editItems[index].amount_paid" type="number" label="Amount Paid"
+              variant="outlined" flat prefix="₱" /></v-col>
+            </v-row>
+          
+            <v-divider></v-divider>
+          </div>
+
+          <div class="text-right font-bold">
+            Total Updated Amount Paid: ₱{{ totalAmountPaid }}
+          </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn text @click="dialog = false">Cancel</v-btn>
+          <v-btn color="primary" @click="applyChanges">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+
 
 
     <StudentSearchStudent v-model="searchDialog" />
@@ -411,7 +589,7 @@
       </v-tooltip>
       <v-tooltip text="Pay" location="top">
         <template v-slot:activator="{ props }">
-          <v-btn v-bind="props" value="pay" @click="paymentDialog = true" icon>
+          <v-btn v-bind="props" value="pay" @click="payment2Dialog = true" icon>
             <v-icon>mdi-cash-multiple</v-icon>
             Pay
           </v-btn>
@@ -436,7 +614,7 @@ const items = ref([
 
 const paymentHeaders = [
   { title: 'Name', key: 'payment_name', sortable: false },
-  { title: 'Amount', key: 'payment_amount', sortable: false },
+  { title: 'Amount Due', key: 'payment_amount', sortable: false },
   { title: 'Amount Paid', key: 'amount_paid', sortable: false },
   { title: 'Balance', key: 'balance', sortable: false },
   { title: 'Payment Status', align: "center", key: 'payment_status', sortable: false },
@@ -472,16 +650,18 @@ const tuitionFeeHeaders = ref([
     sortable: false,
     key: "payment_name",
   },
-  { title: "Amount", key: "payment_amount", align: "center", sortable: false },
+  { title: "Amount Due", key: "payment_amount", align: "center", sortable: false },
   { title: "Due Date", key: "due_date", align: "center", sortable: false },
   { title: "Amount Paid", key: "amount_paid", align: "center", sortable: false },
   { title: "Date Paid", key: "date_paid", sortable: false },
+  { title: "Balance", key: "balance", align: "center", sortable: false },
   { title: "O.R. Number", key: "or_number", align: "center", sortable: false },
   { title: "Status", key: "status", align: "center", sortable: false },
   { title: "", key: "actions", align: "center", sortable: false },
 ])
 
 const paymentDialog = ref(false);
+const payment2Dialog = ref(false);
 const searchDialog = ref(false)
 const tab = ref(null)
 const dialog = ref(false);
@@ -500,6 +680,10 @@ const currentAmountDue = ref(0);
 const totalAmountDue = ref(0);
 //const change = ref(0);
 const cashPayment = ref(0)
+const newAmount = ref(0);
+const editItems = ref([])
+  const now = new Date();
+ const formattedDate = now.toISOString().split('T')[0];
 
 
 async function initialize() {
@@ -536,7 +720,7 @@ async function initialize() {
 // )
 
 // Disable selection if item.status === "paid"
-const isSelectable = (item) => item.payment_status !== 'paid';
+const isSelectable = (item) => item.payment_status === 'unpaid';
 
 // const paymentTotalAmount = computed(() =>
 //   selected.value.reduce((sum, item) => sum + item.balance, 0)
@@ -550,22 +734,27 @@ const selectedTotalAmount = computed(() => {
 // Computed change
 const change = computed(() => {
   const diff = cashPayment.value - selectedTotalAmount.value
-  return diff >=0 ? diff : 0
+  return diff >= 0 ? diff : 0
 })
 
 async function getTuitionFeeSummary() {
   try {
     //console.log("Tuition Fee ID: ", tuitionFee.value?.documentId)
     //const tuition_id = tuitionFee.value?.documentId;
-    let result = await $fetch(`/api/payment/list/${route.params.id}`);
+    // let result = await $fetch(`/api/payment/list/${route.params.id}`);
+    let result = await $fetch(`/api/payment/tuition_fee/summary?student_id=${route.params.id}&semester=${semester.value}&sy=${sy.value}`);
 
     if (result) {
       //console.log(result);
       if (result.length == 0) {
         console.log("No Tuition Fee Summary record found");
       } else {
-        //console.log("Tuition Fee Summary Found");
-        tuitionFeeSummary.value = result;
+        console.log("Tuition Fee Summary Found", result.summary);
+        tuitionFeeSummary.value = result.summary;
+        previousDue.value = formatNumber(result.previousDue);
+        currentAmountDue.value = formatNumber(result.currentDue);
+        totalAmountDue.value = formatNumber(result.totalAmountDue);
+        unpaidTuitions.value = result.summary
       }
     }
   } catch (err) {
@@ -580,10 +769,10 @@ async function getPaymentDues() {
 
     if (result) {
       //console.log("Payment Due: ", result);
-      previousDue.value = formatNumber(result.previousDue);
-      currentAmountDue.value = formatNumber(result.currentDue);
-      totalAmountDue.value = formatNumber(result.totalAmountDue);
-      unpaidTuitions.value = result.invoices
+      // previousDue.value = formatNumber(result.previousDue);
+      // currentAmountDue.value = formatNumber(result.currentDue);
+      // totalAmountDue.value = formatNumber(result.totalAmountDue);
+      // unpaidTuitions.value = result.invoices
 
     }
   } catch (err) {
@@ -607,21 +796,20 @@ function formatNumber(value) {
 }
 
 async function payNow() {
-  const now = new Date();
+
   let paymentStatus = "";
-  const formattedDate = now.toISOString().split('T')[0];
-    if (selectedTotalAmount.value <= cashPayment.value) {
+ 
+  if (selectedTotalAmount.value <= cashPayment.value) {
     console.log("Payment status: Paid")
     paymentStatus = "paid"
   }
   const simplified = selected.value.map(item => ({
     id: item.id,
+    payment_name: item.payment_name,
     amount_paid: item.amount_paid,
     date_paid: formattedDate,
     payment_status: paymentStatus
   }))
-
-
 
   let payload = {
     selected_total_amount: selectedTotalAmount.value,
@@ -632,6 +820,62 @@ async function payNow() {
 
   console.log("Selected", payload)
   //console.log("Selected: ", simplified)
+}
+
+async function updateAmountPaid() {
+  selected.value.forEach(selectedItem => {
+    // Find and update the original item in the itemlist
+    const item = items.value.find(i => i.id === selectedItem.id)
+    if (item) {
+      item.amount_paid = newAmount.value;
+    }
+  })
+
+  console.log('Updated items: ', selected.value)
+}
+
+const totalAmountPaid = computed(() => {
+  return editItems.value.reduce((sum, item) => sum + Number(item.amount_paid || 0), 0)
+})
+
+function openDialog() {
+  // Clone selected items to edit locally
+  editItems.value = selected.value.map(item => ({ ...item }))
+  dialog.value = true
+}
+
+function getPaymentStatus(item) {
+  console.log("get Payment: ", item)
+  if (item.amount_paid >= item.balance) return 'Paid'
+  if (item.amount_paid > 0) return 'Partial'
+  return 'Unpaid'
+}
+
+function applyChanges() {
+  // Update original items with new values
+  editItems.value.forEach(edited => {
+    const original = items.value.find(i => i.id === edited.id)
+    if (original) {
+      original.amount_paid = edited.amount_paid
+      original.payment_status = getPaymentStatus(edited)
+    }
+    console.log("Original: ", edited)
+  })
+
+  // Log updated selected items
+  const updatedSelected = editItems.value.map(({ id, payment_name, amount_paid, balance }) => ({
+    id,
+    payment_name,
+    date_paid: formattedDate,
+    amount_paid,
+    payment_status: getPaymentStatus({...items.value.find(i => i.id === id), amount_paid, balance})
+  }))
+  selected.value = []
+
+  console.log('Updated selected items:', updatedSelected)
+
+  dialog.value = false
+
 }
 
 
@@ -712,6 +956,10 @@ onMounted(async () => {
 
 .payment-card-outlined {
   border: 1px solid #d6d6d6;
+}
+
+.total-amount-style {
+  font-size: 16px;
 }
 
 
