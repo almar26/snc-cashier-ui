@@ -372,7 +372,7 @@
 
             <v-divider vertical></v-divider>
 
-            <v-col v-cols="12" md="5">
+            <v-col cols="12" md="5">
               <v-card elevation="0">
                 <v-card-text>
                   <v-text-field variant="solo-filled" v-model="selectedTotalAmount"
@@ -451,7 +451,7 @@
 
             <v-divider vertical></v-divider>
 
-            <v-col v-cols="12" md="4">
+            <v-col cols="12" md="4">
               <v-card elevation="0">
                 <v-card-title>Selected Payment</v-card-title>
                 <v-divider></v-divider>
@@ -529,8 +529,8 @@
         <v-divider></v-divider>
 
         <v-card-text>
-          <h2>Total Amount: {{ selectedTotalAmount }}</h2>
-          <div v-for="(item, index) in editItems" :key="item.id" class="mb-4">
+          <h3 class="mb-4">Total Amount: {{ formatCurrency(selectedTotalAmount) }}</h3>
+          <!-- <div v-for="(item, index) in editItems" :key="item.id" class="mb-4">
 
             <div class="text-sm mb-1 font-medium">{{ item.payment_name }}</div>
             <div class="text-sm mb-1 font-medium">Amount Balance: {{ formatCurrency(item.balance) }}</div>
@@ -542,21 +542,54 @@
             </div>
             <v-row class="mt-3">
               <v-col cols="3"><v-text-field label="Status" v-model="editItems[index].payment_status" variant="solo-filled" flat></v-text-field></v-col>
-              <v-col cols="9">  <v-text-field v-model.number="editItems[index].amount_paid" type="number" label="Amount Paid"
+              <v-col>  <v-text-field v-model.number="editItems[index].amount_paid" type="number" label="Amount Paid"
               variant="outlined" flat prefix="₱" /></v-col>
             </v-row>
-          
             <v-divider></v-divider>
-          </div>
-
-          <div class="text-right font-bold">
-            Total Updated Amount Paid: ₱{{ totalAmountPaid }}
+    
+          </div> -->
+          <v-divider></v-divider>
+          <v-table> 
+            <thead>
+              <tr>
+                <th class="text-left">
+                  Payment Name
+                </th>
+                <th class="text-left">
+                  Balance
+                </th>
+                <th class="text-center"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in editItems" :key="item.id">
+                <td>{{ item.payment_name }}</td>
+                <td>{{ formatCurrency(item.balance) }}</td>
+                <td class="py-3">
+                  <v-text-field v-model.number="editItems[index].amount_paid" density="compact" type="number"
+                    label="Enter Amount" variant="outlined" hide-details="auto" flat prefix="₱" />
+                </td>
+              </tr>
+            </tbody>
+          </v-table>
+          <v-divider class="mt-8"></v-divider>
+          <div class="text-right font-bold mt-2">
+            <!-- Total Updated Amount Paid: ₱{{ totalAmountPaid }} -->
+            <v-row justify="end" no-gutters>
+              <!-- <v-col cols="4">Total Amount</v-col> -->
+              <v-col cols="6">
+                <!-- <v-text-field :model-value="totalAmountPaid" variant="solo-filled" flat readonly></v-text-field> -->
+                  <v-text-field label="Total Amount" prefix="&#x20B1;" readonly
+                          :model-value="totalAmountPaid" variant="solo-filled" flat></v-text-field>
+              </v-col>
+            </v-row>
           </div>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn text @click="dialog = false">Cancel</v-btn>
-          <v-btn color="primary" @click="applyChanges">Save</v-btn>
+          <!-- <v-btn text @click="dialog = false">Cancel</v-btn> -->
+          <v-btn color="primary" variant="flat" width="260"  @click="applyChanges">Save</v-btn>.
+          <v-spacer />
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -682,8 +715,8 @@ const totalAmountDue = ref(0);
 const cashPayment = ref(0)
 const newAmount = ref(0);
 const editItems = ref([])
-  const now = new Date();
- const formattedDate = now.toISOString().split('T')[0];
+const now = new Date();
+const formattedDate = now.toISOString().split('T')[0];
 
 
 async function initialize() {
@@ -798,7 +831,7 @@ function formatNumber(value) {
 async function payNow() {
 
   let paymentStatus = "";
- 
+
   if (selectedTotalAmount.value <= cashPayment.value) {
     console.log("Payment status: Paid")
     paymentStatus = "paid"
@@ -868,7 +901,7 @@ function applyChanges() {
     payment_name,
     date_paid: formattedDate,
     amount_paid,
-    payment_status: getPaymentStatus({...items.value.find(i => i.id === id), amount_paid, balance})
+    payment_status: getPaymentStatus({ ...items.value.find(i => i.id === id), amount_paid, balance })
   }))
   selected.value = []
 
