@@ -75,7 +75,7 @@
               <v-col cols="12">
                 <v-card elevation="0" class="card-outlined">
                   <v-toolbar color="transparent" density="compact">
-                    <v-toolbar-title class="title-color">Tuition Fee Details</v-toolbar-title>
+                    <v-toolbar-title class="title-color"><v-icon start>mdi-clipboard-text-clock</v-icon> Tuition Fee Details</v-toolbar-title>
                   </v-toolbar>
                   <v-divider></v-divider>
                   <v-card-text>
@@ -99,12 +99,33 @@
                     </v-row>
                     <v-row dense justify="center">
                       <v-col cols="12" md="11">
-                        <v-text-field label="Remaining Balance" prefix="&#x20B1;" readonly
+                        <v-text-field label="Remaining Balance" hide-details prefix="&#x20B1;" readonly
                           :model-value="balanceFormatted" variant="solo-filled" flat></v-text-field>
                       </v-col>
                     </v-row>
+
+
                   </v-card-text>
 
+                </v-card>
+              </v-col>
+            </v-row>
+
+            <v-row >
+              <v-col cols="12" >
+                <v-card elevation="0" class="card-outlined">
+                  <v-toolbar color="transparent" density="compact">
+                    <v-toolbar-title class="title-color">Total Balance</v-toolbar-title>
+                  </v-toolbar>
+                  <v-divider></v-divider>
+                  <v-card-text>
+                    <v-row dense justify="center">
+                      <v-col cols="12" md="11">
+                        <v-text-field label="Total Balance" hide-details prefix="&#x20B1;" readonly :model-value="totalBalanceFormatted"
+                          variant="solo-filled" flat></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
                 </v-card>
               </v-col>
             </v-row>
@@ -292,116 +313,14 @@
 
 
     <!-- DIALOG BOX -->
-    <!-- Payment Method 1 -->
-    <v-dialog v-model="paymentDialog" width="1300">
-      <v-card>
-        <v-toolbar color="transparent" density="compact">
-          <v-toolbar-title class="title-color">
-            <v-icon start>mdi-cash-multiple</v-icon> Select Payment
-          </v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-btn icon="mdi-close" @click="paymentDialog = false"></v-btn>
-        </v-toolbar>
-        <v-divider></v-divider>
-        <v-card-text>
-          <!-- <v-row>
-            <v-col cols="87">
-              <v-card variant="outlined" class="payment-card-outlined">
-                <v-card-text>
-                 
-                </v-card-text>
-              </v-card>
-            </v-col>
+  
 
-            <v-col cols="5">
-              <v-card variant="outlined" class="payment-card-outlined">
-                <v-card-text>
-                  <v-text-field variant="solo-filled" label="Total Amount" class="custom-outlined" flat></v-text-field>
-                  <v-text-field variant="solo-filled" label="Cash" class="custom-outlined" flat></v-text-field>
-                  <v-text-field variant="solo-filled" label="Change" class="custom-outlined" flat></v-text-field>
-                </v-card-text>
-                <v-divider></v-divider>
-                <v-card-actions>
-                  <v-btn color="primary" variant="flat" block>Pay Now</v-btn>
-                </v-card-actions>
-              </v-card>
-
-            </v-col>
-          </v-row> -->
-
-          <v-row>
-            <v-col cols="12" md="7">
-              <v-divider></v-divider>
-              <v-data-table v-model="selected" :headers="paymentHeaders" :item-selectable="isSelectable"
-                hide-default-footer :items="unpaidTuitions" item-value="id" show-select density="compact" return-object
-                class="elevation-0">
-                <template v-slot:[`item.payment_amount`]="{ item }">
-                  {{ formatCurrency(item.payment_amount) }}
-                </template>
-                <template v-slot:[`item.amount_paid`]="{ item }">
-                  {{ formatCurrency(item.amount_paid) }}
-                </template>
-                <template v-slot:[`item.balance`]="{ item }">
-                  {{ formatCurrency(item.balance) }}
-                </template>
-                <template v-slot:[`item.payment_status`]="{ item }">
-                  <v-chip label size="small" color="warning" v-if="item.payment_status == 'partial'">
-                    Partial
-                  </v-chip>
-                  <v-chip label size="small" color="green" v-else-if="item.payment_status == 'paid'">
-                    Paid
-                  </v-chip>
-                  <v-chip label size="small" color="grey" v-else>
-                    Unpaid
-                  </v-chip>
-
-                </template>
-                <!-- <template #bottom>
-                  <v-row justify="end" class="pa-4">
-                    <v-col cols="auto">
-                      <strong>Total Amount:</strong> {{ totalAmount }}
-                    </v-col>
-                  </v-row>
-                </template> -->
-              </v-data-table>
-              <v-divider></v-divider>
-
-              <!-- <pre>{{ selected }}</pre> -->
-
-            </v-col>
-
-            <v-divider vertical></v-divider>
-
-            <v-col cols="12" md="5">
-              <v-card elevation="0">
-                <v-card-text>
-                  <v-text-field variant="solo-filled" v-model="selectedTotalAmount"
-                    :model-value="formatNumber(selectedTotalAmount)" prefix="&#x20B1;" readonly label="Total Amount"
-                    class="custom-outlined" flat></v-text-field>
-                  <v-text-field variant="solo-filled" label="Change" v-model="change"
-                    :model-value="formatNumber(change)" class="custom-outlined" readonly prefix="&#x20B1;"
-                    flat></v-text-field>
-                  <v-text-field variant="outlined" type="number" label="Cash" class="custom-outlined"
-                    v-model="cashPayment" prefix="&#x20B1;" flat></v-text-field>
-                </v-card-text>
-
-                <v-card-actions>
-                  <v-btn color="primary" variant="flat" :disabled="cashPayment < selectedTotalAmount" @click="payNow"
-                    block>Pay Now</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-
-    <!-- Payment Method 2 -->
+    <!-- Payment Method -->
     <v-dialog v-model="payment2Dialog" width="1200">
       <v-card>
         <v-toolbar color="transparent" density="compact">
           <v-toolbar-title class="title-color">
-            <v-icon start>mdi-cash-multiple</v-icon> Select Payment 2
+            <v-icon start>mdi-cash-multiple</v-icon> Select Payment
           </v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon="mdi-close" @click="payment2Dialog = false"></v-btn>
@@ -549,7 +468,7 @@
     
           </div> -->
           <v-divider></v-divider>
-          <v-table> 
+          <v-table density="compact">
             <thead>
               <tr>
                 <th class="text-left">
@@ -579,16 +498,25 @@
               <!-- <v-col cols="4">Total Amount</v-col> -->
               <v-col cols="6">
                 <!-- <v-text-field :model-value="totalAmountPaid" variant="solo-filled" flat readonly></v-text-field> -->
-                  <v-text-field label="Total Amount" prefix="&#x20B1;" readonly
-                          :model-value="totalAmountPaid" variant="solo-filled" flat></v-text-field>
+                <v-text-field label="Enter Official Receipt" v-model="orNumber" variant="solo-filled"
+                  flat></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row justify="end" no-gutters>
+              <!-- <v-col cols="4">Total Amount</v-col> -->
+              <v-col cols="6">
+                <!-- <v-text-field :model-value="totalAmountPaid" variant="solo-filled" flat readonly></v-text-field> -->
+                <v-text-field label="Total Amount" prefix="&#x20B1;" readonly :model-value="totalAmountPaid"
+                  variant="solo-filled" flat></v-text-field>
               </v-col>
             </v-row>
           </div>
         </v-card-text>
-        <v-card-actions>
+        <v-divider></v-divider>
+        <v-card-actions class="my-2">
           <v-spacer />
           <!-- <v-btn text @click="dialog = false">Cancel</v-btn> -->
-          <v-btn color="primary" variant="flat" width="260"  @click="applyChanges">Save</v-btn>.
+          <v-btn color="primary" rounded variant="flat" width="200" @click="applyPayment">Pay Now</v-btn>.
           <v-spacer />
         </v-card-actions>
       </v-card>
@@ -630,10 +558,14 @@
       </v-tooltip>
     </v-bottom-navigation>
 
+    <GlobalSnackbar />
+
   </div>
 </template>
 
 <script setup>
+const { show } = useSnackbar();
+
 import hotkeys from 'hotkeys-js';
 // definePageMeta({
 //   layout: "account",
@@ -706,11 +638,13 @@ const tuitionFeeFormatted = ref(null);
 const discountFormatted = ref(null);
 const downpaymentFormatted = ref(null);
 const balanceFormatted = ref(null);
+const totalBalanceFormatted = ref(null);
 const semester = ref("1st Semester");
 const sy = ref("2024-2025");
 const previousDue = ref(0);
 const currentAmountDue = ref(0);
 const totalAmountDue = ref(0);
+const orNumber = ref("");
 //const change = ref(0);
 const cashPayment = ref(0)
 const newAmount = ref(0);
@@ -736,7 +670,7 @@ async function initialize() {
         tuitionFeeFormatted.value = formatNumber(result.data.tuition_fee.tuition_fee)
         discountFormatted.value = formatNumber(result.data.tuition_fee.discount)
         downpaymentFormatted.value = formatNumber(result.data.tuition_fee.downpayment)
-        balanceFormatted.value = formatNumber(result.data.tuition_fee.balance)
+        // balanceFormatted.value = formatNumber(result.data.tuition_fee.balance)
       }
     }
   } catch (err) {
@@ -788,6 +722,8 @@ async function getTuitionFeeSummary() {
         currentAmountDue.value = formatNumber(result.currentDue);
         totalAmountDue.value = formatNumber(result.totalAmountDue);
         unpaidTuitions.value = result.summary
+        balanceFormatted.value = formatNumber(result.totalBalance)
+        totalBalanceFormatted.value = formatNumber(result.totalBalance)
       }
     }
   } catch (err) {
@@ -879,12 +815,12 @@ function openDialog() {
 
 function getPaymentStatus(item) {
   console.log("get Payment: ", item)
-  if (item.amount_paid >= item.balance) return 'Paid'
-  if (item.amount_paid > 0) return 'Partial'
-  return 'Unpaid'
+  if (item.amount_paid >= item.balance) return 'paid'
+  if (item.amount_paid > 0) return 'partial'
+  return 'unpaid'
 }
 
-function applyChanges() {
+async function applyPayment() {
   // Update original items with new values
   editItems.value.forEach(edited => {
     const original = items.value.find(i => i.id === edited.id)
@@ -900,15 +836,27 @@ function applyChanges() {
     id,
     payment_name,
     date_paid: formattedDate,
+    or_number: orNumber.value,
     amount_paid,
     payment_status: getPaymentStatus({ ...items.value.find(i => i.id === id), amount_paid, balance })
   }))
-  selected.value = []
-
   console.log('Updated selected items:', updatedSelected)
+  //snackbar.value = true;
 
-  dialog.value = false
-
+  await $fetch(`/api/payment/tuition_fee/payment`, {
+    method: "POST",
+    body: updatedSelected
+  })
+    .then(response => {
+      console.log(response);
+      selected.value = []
+      getTuitionFeeSummary()
+      show('Payment success', 'success')
+      dialog.value = false
+    })
+    .catch(err => {
+      console.error("Error: ", err)
+    })
 }
 
 
@@ -917,7 +865,7 @@ function applyChanges() {
 onMounted(async () => {
   await initialize();
   await getTuitionFeeSummary();
-  await getPaymentDues();
+  //await getPaymentDues();
   hotkeys('f1, ctrl+a, f4', (event, handler) => {
     switch (handler.key) {
       case 'f1':
