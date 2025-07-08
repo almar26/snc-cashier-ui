@@ -75,7 +75,8 @@
               <v-col cols="12">
                 <v-card elevation="0" class="card-outlined">
                   <v-toolbar color="transparent" density="compact">
-                    <v-toolbar-title class="title-color"><v-icon start>mdi-clipboard-text-clock</v-icon> Tuition Fee Details</v-toolbar-title>
+                    <v-toolbar-title class="title-color"><v-icon start>mdi-clipboard-text-clock</v-icon> Tuition Fee
+                      Details</v-toolbar-title>
                   </v-toolbar>
                   <v-divider></v-divider>
                   <v-card-text>
@@ -111,8 +112,8 @@
               </v-col>
             </v-row>
 
-            <v-row >
-              <v-col cols="12" >
+            <v-row>
+              <v-col cols="12">
                 <v-card elevation="0" class="card-outlined">
                   <v-toolbar color="transparent" density="compact">
                     <v-toolbar-title class="title-color">Total Balance</v-toolbar-title>
@@ -121,8 +122,8 @@
                   <v-card-text>
                     <v-row dense justify="center">
                       <v-col cols="12" md="11">
-                        <v-text-field label="Total Balance" hide-details prefix="&#x20B1;" readonly :model-value="totalBalanceFormatted"
-                          variant="solo-filled" flat></v-text-field>
+                        <v-text-field label="Total Balance" hide-details prefix="&#x20B1;" readonly
+                          :model-value="totalBalanceFormatted" variant="solo-filled" flat></v-text-field>
                       </v-col>
                     </v-row>
                   </v-card-text>
@@ -186,6 +187,9 @@
                         </v-chip>
                         <v-chip label size="small" color="green" v-else-if="item.payment_status == 'paid'">
                           Paid
+                        </v-chip>
+                        <v-chip label size="small" color="red" v-else-if="item.payment_status == 'overdue'">
+                          Overdue
                         </v-chip>
                         <v-chip label size="small" color="grey" v-else>
                           Unpaid
@@ -313,7 +317,7 @@
 
 
     <!-- DIALOG BOX -->
-  
+
 
     <!-- Payment Method -->
     <v-dialog v-model="payment2Dialog" width="1200">
@@ -354,6 +358,9 @@
                   </v-chip>
                   <v-chip label size="small" color="green" v-else-if="item.payment_status == 'paid'">
                     Paid
+                  </v-chip>
+                  <v-chip label size="small" color="red" v-else-if="item.payment_status == 'overdue'">
+                    Overdue
                   </v-chip>
                   <v-chip label size="small" color="grey" v-else>
                     Unpaid
@@ -687,7 +694,7 @@ async function initialize() {
 // )
 
 // Disable selection if item.status === "paid"
-const isSelectable = (item) => item.payment_status === 'unpaid';
+const isSelectable = (item) => item.payment_status === 'unpaid' || item.payment_status === 'partial' || item.payment_status === 'overdue';
 
 // const paymentTotalAmount = computed(() =>
 //   selected.value.reduce((sum, item) => sum + item.balance, 0)

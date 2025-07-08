@@ -17,7 +17,6 @@
         <template v-slot:actions>
           <v-btn class="text-none" color="white" elevation="1" rounded="lg" size="small" text="Learn more"
             width="96"></v-btn>
-
           <v-btn class="text-none" elevation="1" rounded="lg" size="small" text="Add transfer" width="96"></v-btn>
         </template>
       </v-empty-state>
@@ -66,7 +65,7 @@
 
     <StudentSearchStudent v-model="searchDialog"/>
     
-    <v-bottom-navigation v-model="value" grow app height="70" class="floating-nav">
+    <v-bottom-navigation bg-color="#181a1b" v-model="value" grow app height="70" class="floating-nav">
       <v-btn value="home" to="/" icon>
         <v-icon>mdi-home</v-icon>
         Home
@@ -176,7 +175,7 @@ onMounted(() => {
   transform: translateX(-50%) !important;
   bottom: 16px !important;
   width: 400px !important;
-  border-radius: 12px;
+  border-radius: 33px;
   background-color: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
