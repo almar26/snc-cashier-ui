@@ -694,7 +694,8 @@ async function initialize() {
 // )
 
 // Disable selection if item.status === "paid"
-const isSelectable = (item) => item.payment_status === 'unpaid' || item.payment_status === 'partial' || item.payment_status === 'overdue';
+// const isSelectable = (item) => item.payment_status === 'unpaid' || item.payment_status === 'partial' || item.payment_status === 'overdue';
+const isSelectable = (item) => ['unpaid', 'overdue', 'partial'].includes(item.payment_status);
 
 // const paymentTotalAmount = computed(() =>
 //   selected.value.reduce((sum, item) => sum + item.balance, 0)
