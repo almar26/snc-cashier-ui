@@ -146,6 +146,10 @@
                   <v-toolbar color="transparent" density="compact">
                     <v-toolbar-title class="title-color"><v-icon start>mdi-clipboard-text-clock</v-icon> Tuition Fee
                       Summary</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" :disabled="calculateOverdueDialog" variant="flat" @click="updateOverdueStatus()" class="mr-5 text-capitalize"><v-icon start>mdi-refresh</v-icon> Calculate</v-btn>
+                    <!-- <v-btn :disabled="calculateOverdueDialog" color="primary" variant="flat" icon="mdi-refresh" text="Start loading"
+                      @click="calculateOverdueDialog = true"></v-btn> -->
                   </v-toolbar>
                   <v-divider></v-divider>
                   <v-card-text>
@@ -529,6 +533,24 @@
       </v-card>
     </v-dialog>
 
+    <!-- Update Overdue Status -->
+    <v-dialog v-model="updateOverdueDialog" max-width="320" persistent>
+      <v-list class="py-2" color="primary" elevation="12" rounded="lg">
+        <v-list-item prepend-icon="mdi-clipboard-text-clock" title="Calculating...">
+          <template v-slot:prepend>
+            <div class="pe-4">
+              <v-icon color="primary" size="x-large"></v-icon>
+            </div>
+          </template>
+
+          <template v-slot:append>
+            <v-progress-circular color="primary" indeterminate="disable-shrink" size="16"
+              width="2"></v-progress-circular>
+          </template>
+        </v-list-item>
+      </v-list>
+    </v-dialog>
+
 
 
 
@@ -634,6 +656,7 @@ const tuitionFeeHeaders = ref([
 
 const paymentDialog = ref(false);
 const payment2Dialog = ref(false);
+const updateOverdueDialog = ref(false);
 const searchDialog = ref(false)
 const tab = ref(null)
 const dialog = ref(false);
@@ -865,6 +888,30 @@ async function applyPayment() {
     .catch(err => {
       console.error("Error: ", err)
     })
+}
+
+// Update Overdue
+async function updateOverdueStatus() {
+  
+  try {
+    updateOverdueDialog.value = true
+    const payload = {
+      student_id: route.params.id
+    }
+    await $fetch(`/api/payment/update/overdue-status`, {
+      method: 'PUT',
+      body: payload
+    })
+    .then(response => {
+      console.log("Overdue Status: ", response)
+      getTuitionFeeSummary()
+      updateOverdueDialog.value = false;
+      show(response.message, 'success')
+    })
+  } catch (err) {
+    console.error("Failed to fetch data: ", err);
+    throw err;
+  }
 }
 
 
