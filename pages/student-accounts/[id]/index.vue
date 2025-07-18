@@ -1,9 +1,13 @@
 <template>
   <div>
     <BaseBreadcrumb :title="page.title" :icon="page.icon" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
+    <v-row v-if="accountNotFound">
+      <v-col cols=12>
+          <h1>Account Not Found!</h1>
+      </v-col>
+    </v-row>
 
-
-    <v-row>
+    <v-row v-else>
       <v-col cols="12" md="3">
         <v-row>
           <v-col cols="12">
@@ -615,7 +619,7 @@ const paymentHeaders = [
 ]
 
 const unpaidTuitions = ref([])
-
+const accountNotFound = ref(false);
 const selected = ref([])
 const selectedItems = ref([])
 const settingsSelection = ref([])
@@ -633,7 +637,7 @@ const breadcrumbs = ref([
   },
 
   {
-    title: "List",
+    title: "Account",
     disabled: true,
   },
 ]);
@@ -687,13 +691,15 @@ async function initialize() {
   try {
     let result = await $fetch(`/api/tuition-fee/account/${route.params.id}`);
 
-    if (result) {
-      //console.log(result)
+    if (result.status == "fail") {
+      console.log(result.message)
+      accountNotFound.value = true
+    } else {
+      if (result) {
+      console.log(result)
       //studentDetails.value = result.data;
 
-      if (result.length == 0) {
-        console.log("No record found");
-      } else {
+    
         //console.log("Record found")
         studentAccounts.value = result.data;
         tuitionFee.value = result.data.tuition_fee
@@ -701,8 +707,12 @@ async function initialize() {
         discountFormatted.value = formatNumber(result.data.tuition_fee.discount)
         downpaymentFormatted.value = formatNumber(result.data.tuition_fee.downpayment)
         // balanceFormatted.value = formatNumber(result.data.tuition_fee.balance)
-      }
+      
     }
+
+    }
+
+    
   } catch (err) {
     console.error("Failed to fetch data: ", err);
     throw err;
@@ -718,7 +728,7 @@ async function initialize() {
 
 // Disable selection if item.status === "paid"
 // const isSelectable = (item) => item.payment_status === 'unpaid' || item.payment_status === 'partial' || item.payment_status === 'overdue';
-const isSelectable = (item) => ['unpaid', 'overdue', 'partial'].includes(item.payment_status);
+const isSelectable = (item) => ['unpaid', 'partial'].includes(item.payment_status);
 
 // const paymentTotalAmount = computed(() =>
 //   selected.value.reduce((sum, item) => sum + item.balance, 0)
